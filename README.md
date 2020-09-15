@@ -8,7 +8,6 @@ The Beach House theory proposes the notion that an individual who is unable to t
 
 In this paper we discuss the potential of the combined effects of convergent evolution, and the “great filter” (an event which precludes the continuation of individual genes that lack specific characteristics) effect on the human species, especially with relation to filial involvement in reproductive selection. We propose a primary “great filter” of filial decision, originating from the male leader of the family unit, and based on the cultural markings of adequate levels of masculinity as an indicator of survivability of potential mates for the females of breeding age within the unit. We use a statistical model to predict the amount of time necessary for this convergent evolution to entirely replace the current gene pool of potential mates with those predisposed to the cultural markings of masculinity (namely sports interest).
 
-[Original Work](https://docs.google.com/document/d/1pihQFza4yGf2vw2LhP_gVjnUQlgahgjDsm7SfpAsFHo/edit#)
 
 ## Running
 
