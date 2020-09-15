@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.psypdt'
+version = '0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+dependencies {
+    compile 'junit:junit:4.12'
+    implementation 'com.github.eclab:mason:3059783c0c'
+}
