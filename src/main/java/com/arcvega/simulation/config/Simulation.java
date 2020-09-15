@@ -1,4 +1,4 @@
-package main.java.config;
+package com.arcvega.simulation.config;
 
 import sim.engine.SimState;
 
