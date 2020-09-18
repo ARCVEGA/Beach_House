@@ -5,6 +5,8 @@ import sim.engine.SimState;
 
 public class Matt extends Agent {
 
+  /**Casey affinity is the quantified amount that a Casey
+   * likes a particular Matt*/
   private final int caseyAffinity;
 
   public Matt(SimState simState){
