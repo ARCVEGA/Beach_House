@@ -1,8 +1,13 @@
 package com.arcvega.simulation.config;
 
+import com.arcvega.simulation.agents.Casey;
 import sim.engine.SimState;
+import sim.field.continuous.Continuous2D;
+import sim.util.Double2D;
 
 public class Simulation extends SimState {
+
+    public Continuous2D space = new Continuous2D(1, 200, 200);
 
     /**
      * Constructor that automatically sets seed to the current time.
@@ -23,6 +28,13 @@ public class Simulation extends SimState {
     @Override
     public void start() {
         super.start();
+
+        space.clear();
+
+        Casey casey = new Casey();
+        space.setObjectLocation(casey, new Double2D(100, 100));
+
+        schedule.scheduleRepeating(casey);
     }
 
     /**

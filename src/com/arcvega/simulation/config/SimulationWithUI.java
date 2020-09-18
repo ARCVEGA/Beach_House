@@ -1,12 +1,17 @@
 package com.arcvega.simulation.config;
 
+import com.arcvega.simulation.agents.Casey;
 import sim.display.Console;
 import sim.display.Controller;
 import sim.display.Display2D;
 import sim.display.GUIState;
 import sim.engine.SimState;
+import sim.field.continuous.Continuous2D;
+import sim.portrayal.continuous.ContinuousPortrayal2D;
+import sim.portrayal.simple.OvalPortrayal2D;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class SimulationWithUI extends GUIState {
 
@@ -14,6 +19,7 @@ public class SimulationWithUI extends GUIState {
     private Display2D display;
     /** The frame that will encapsulate the display */
     private JFrame displayFrame;
+    private ContinuousPortrayal2D spacePortrayal = new ContinuousPortrayal2D();
 
     public SimulationWithUI(SimState state) {
         super(state);
@@ -42,18 +48,31 @@ public class SimulationWithUI extends GUIState {
         displayFrame.setTitle("Beach House");
         controller.registerFrame(displayFrame);
         displayFrame.setVisible(true);
+
+        display.attach(spacePortrayal, "2DSpace");
     }
 
     /** Called when the play button is pressed, just before SimState.start() is called. */
     @Override
     public void start() {
         super.start();
+
+        spacePortrayal.setField(((Simulation)state).space);
+        spacePortrayal.setPortrayalForClass(Casey.class, new OvalPortrayal2D( Color.red, 2 ));
+
+        // Quick reset of the frame to make sure there is a clean board
+        display.reset();
+        display.setBackdrop(new Color(168, 221, 181));
+        display.repaint();
     }
 
     /** Called when the GUI is about to be destroyed. */
     @Override
     public void quit() {
         super.quit();
+        if (displayFrame != null) displayFrame.dispose();
+        displayFrame = null;
+        display = null;
     }
 
     /**
