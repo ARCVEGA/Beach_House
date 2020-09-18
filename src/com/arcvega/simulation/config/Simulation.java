@@ -1,6 +1,8 @@
 package com.arcvega.simulation.config;
 
 import com.arcvega.simulation.agents.Casey;
+import com.arcvega.simulation.agents.Jim;
+import com.arcvega.simulation.agents.Matt;
 import sim.engine.SimState;
 import sim.field.continuous.Continuous2D;
 import sim.util.Double2D;
@@ -32,9 +34,15 @@ public class Simulation extends SimState {
         space.clear();
 
         Casey casey = new Casey();
+        Matt matt = new Matt();
+        Jim jim = new Jim();
         space.setObjectLocation(casey, new Double2D(100, 100));
+        space.setObjectLocation(matt, new Double2D(50, 50));
+        space.setObjectLocation(jim, new Double2D(70, 70));
 
         schedule.scheduleRepeating(casey);
+        schedule.scheduleRepeating(matt);
+        schedule.scheduleRepeating(jim);
     }
 
     /**

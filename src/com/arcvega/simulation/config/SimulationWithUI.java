@@ -1,6 +1,8 @@
 package com.arcvega.simulation.config;
 
 import com.arcvega.simulation.agents.Casey;
+import com.arcvega.simulation.agents.Jim;
+import com.arcvega.simulation.agents.Matt;
 import sim.display.Console;
 import sim.display.Controller;
 import sim.display.Display2D;
@@ -59,6 +61,8 @@ public class SimulationWithUI extends GUIState {
 
         spacePortrayal.setField(((Simulation)state).space);
         spacePortrayal.setPortrayalForClass(Casey.class, new OvalPortrayal2D( Color.red, 2 ));
+        spacePortrayal.setPortrayalForClass(Matt.class, new OvalPortrayal2D(Color.black, 2));
+        spacePortrayal.setPortrayalForClass(Jim.class, new OvalPortrayal2D(Color.blue, 2));
 
         // Quick reset of the frame to make sure there is a clean board
         display.reset();
