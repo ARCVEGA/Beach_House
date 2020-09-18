@@ -10,39 +10,55 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Casey extends Agent {
-    private final double thresholdDistance = 100;
 
-    @Override
-    public void step(SimState simState) {
-        Simulation sim = (Simulation) simState;
+  private final double thresholdDistance = 10;
 
-        Bag potentialMatts = getMattsNearby(sim);
-        if(potentialMatts.isEmpty())
-            randomWalk((Simulation)simState);
-        else{
-            MutableDouble2D vectorTowardsMatt = new MutableDouble2D(sim.space.getObjectLocation(potentialMatts.get(0)).getX() - sim.space.getObjectLocation(this).getX(),
-                    sim.space.getObjectLocation(potentialMatts.get(0)).getY() - sim.space.getObjectLocation(this).getY());
-            vectorTowardsMatt.resize(1);
-            vectorTowardsMatt.addIn(sim.space.getObjectLocation(this));
-            sim.space.setObjectLocation(this, new Double2D(vectorTowardsMatt));
-        }
+  @Override
+  public void step(SimState simState) {
+    Simulation sim = (Simulation) simState;
+    Bag potentialMatts = getMattsNearby(sim);
+
+    if (potentialMatts.isEmpty()) {
+      randomWalk((Simulation) simState);
+    } else {
+      walkTowards(sim, getVectorToMostAttractiveMatt(sim, potentialMatts));
+    }
+  }
+
+  private Double2D getVectorToMostAttractiveMatt(Simulation sim, Bag potentialMatts) {
+    Matt mostAttractiveMatt = (Matt) potentialMatts.get(0);
+    for (Object obj : potentialMatts) {
+      Matt matt = (Matt) obj;
+
+      if (matt.getCaseyAffinity() > mostAttractiveMatt.getCaseyAffinity()) {
+        mostAttractiveMatt = matt;
+      }
     }
 
-    private Bag getMattsNearby(Simulation sim){
-        Bag potentialMatts = new Bag();
-        Bag neighbours = sim.space.getAllObjects();
-
-        Stream<Object> stream = neighbours.stream();
-        potentialMatts.addAll(stream
-                .filter(obj -> obj instanceof Matt)
-                .filter(obj -> calculateDistance(
-                        sim.space.getObjectLocation(obj).getX(),
-                        sim.space.getObjectLocation(obj).getY(),
-                        sim.space.getObjectLocation(this).getX(),
-                        sim.space.getObjectLocation(this).getY())
-                        < thresholdDistance)
-                .collect(Collectors.toList()));
-
-        return potentialMatts;
+    MutableDouble2D vectorTowardsMatt = new MutableDouble2D(
+        sim.space.getObjectLocation(mostAttractiveMatt).getX() - sim.space.getObjectLocation(this)
+            .getX(),
+        sim.space.getObjectLocation(mostAttractiveMatt).getY() - sim.space.getObjectLocation(this)
+            .getY());
+    if (vectorTowardsMatt.length() != 0) {
+      vectorTowardsMatt.resize(1);
     }
+
+    vectorTowardsMatt.addIn(sim.space.getObjectLocation(this));
+    return new Double2D(vectorTowardsMatt);
+  }
+
+  private Bag getMattsNearby(Simulation sim) {
+    Bag potentialMatts = new Bag();
+    Bag neighbours = sim.space.getAllObjects();
+
+    Stream<Object> stream = neighbours.stream();
+    potentialMatts.addAll(stream
+        .filter(obj -> obj instanceof Matt)
+        .filter(obj -> sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(obj))
+            < thresholdDistance)
+        .collect(Collectors.toList()));
+
+    return potentialMatts;
+  }
 }

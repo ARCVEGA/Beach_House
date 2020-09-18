@@ -4,8 +4,9 @@ import com.arcvega.simulation.config.Simulation;
 import sim.engine.SimState;
 
 public class Jim extends Agent {
-    @Override
-    public void step(SimState simState) {
-        randomWalk((Simulation) simState);
-    }
+
+  @Override
+  public void step(SimState simState) {
+    randomWalk((Simulation) simState);
+  }
 }
