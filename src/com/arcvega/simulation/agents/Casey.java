@@ -25,6 +25,13 @@ public class Casey extends Agent {
     }
   }
 
+  /**
+   * Produces a vector derived from the Casey's current location and the most attractive Matt
+   *
+   * @param sim Simulation containing Agents
+   * @param potentialMatts Bag of all potential Matts to pick from
+   * @return Vector from Casey to Mat
+   */
   private Double2D getVectorToMostAttractiveMatt(Simulation sim, Bag potentialMatts) {
     Matt mostAttractiveMatt = (Matt) potentialMatts.get(0);
     for (Object obj : potentialMatts) {
@@ -40,6 +47,8 @@ public class Casey extends Agent {
             .getX(),
         sim.space.getObjectLocation(mostAttractiveMatt).getY() - sim.space.getObjectLocation(this)
             .getY());
+
+    // Prevent teleportation by scaling to unit vector
     if (vectorTowardsMatt.length() != 0) {
       vectorTowardsMatt.resize(1);
     }
