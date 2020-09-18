@@ -33,14 +33,20 @@ public class Simulation extends SimState {
 
         space.clear();
 
-        Casey casey = new Casey();
+
+       for(int i = 0; i < 20000; i++){
+           Casey casey = new Casey();
+           space.setObjectLocation(casey, new Double2D(100, 100));
+           schedule.scheduleRepeating(casey);
+       }
+        //Casey casey = new Casey();
         Matt matt = new Matt();
         Jim jim = new Jim();
-        space.setObjectLocation(casey, new Double2D(100, 100));
+        //space.setObjectLocation(casey, new Double2D(100, 100));
         space.setObjectLocation(matt, new Double2D(50, 50));
         space.setObjectLocation(jim, new Double2D(70, 70));
 
-        schedule.scheduleRepeating(casey);
+        //schedule.scheduleRepeating(casey);
         schedule.scheduleRepeating(matt);
         schedule.scheduleRepeating(jim);
     }
