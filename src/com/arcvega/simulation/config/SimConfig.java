@@ -4,7 +4,7 @@ public class SimConfig {
 
   /**Discretization of the 2D space*/
   public static final int SIM_DISCRETIZATION = 1;
-  /**Wdith of the 2D space */
+  /**Width of the 2D space */
   public static final int SIM_WIDTH = 200;
   /**Height of the 2D space */
   public static final int SIM_HEIGHT = 200;
