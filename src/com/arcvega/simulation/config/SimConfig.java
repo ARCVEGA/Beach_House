@@ -23,7 +23,11 @@ public class SimConfig {
   public static final double CASEY_MINIMUM_COUPLING_DISTANCE = 2;
 
   /**Max distance that a JIM is from his corresponding CASEY*/
-  public static final double JIM_THRESHOLD_DISTANCE = 5;
+  public static final double JIM_THRESHOLD_DISTANCE = 50;
+  /**Maximum distance JIM can be from MATT if CASEY is coupled*/
+  public static final double JIM_MAX_DISTANCE_FROM_MATT = 2;
+  /**Scalar for JIM movement vector when JIM moves towards coupled MATT*/
+  public static final double JIM_CHARGE_MATT_SCALAR = 2.0;
 
   /**Amount of MATT agents in the simulation*/
   public static final int MATT_AMOUNT = 200;

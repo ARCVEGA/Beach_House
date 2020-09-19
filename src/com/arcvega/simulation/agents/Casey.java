@@ -9,7 +9,7 @@ import sim.util.Double2D;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-// TODO: Create method that keeps Casey within proximity of coupled Matt
+
 public class Casey extends Agent {
 
   private Matt coupledMatt = null;
@@ -47,7 +47,6 @@ public class Casey extends Agent {
    */
   private Matt getMostAttractiveMatt(Bag potentialMatts) {
 
-    // TODO: Ensure that initial matt cant be paired if hes coupled already
     Matt mostAttractiveMatt = null;
 
     for (Object obj : potentialMatts) {
@@ -99,6 +98,10 @@ public class Casey extends Agent {
       setCoupledMatt(potentialPartner);
       coupledMatt.setCoupledCasey(this);
     }
+  }
+
+  public Matt getCoupledMatt() {
+    return this.coupledMatt;
   }
 
   public void setCoupledMatt(Matt matt) {
