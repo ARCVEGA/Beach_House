@@ -73,8 +73,10 @@ public class Matt extends Agent {
     }
   }
 
-  /***
-   * Filters all Casey agents which are uncoupled and withing a range of {@link SimConfig#MATT_THRESHOLD_DISTANCE}
+  /**
+   * Filters all Casey agents which are uncoupled and withing a range of {@link
+   * SimConfig#MATT_THRESHOLD_DISTANCE}
+   *
    * @param sim Simulation containing agents
    * @return Bag of potential Casey agents that Matt may want to couple with
    */

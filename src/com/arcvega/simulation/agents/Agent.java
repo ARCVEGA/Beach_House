@@ -19,6 +19,8 @@ public abstract class Agent implements Steppable {
 
   /**
    * Function that just moves agent to random walk.
+   *
+   * @param sim Simulation containing all agents
    */
   void randomWalk(Simulation sim) {
     Double2D location = sim.space.getObjectLocation(this);
@@ -84,11 +86,15 @@ public abstract class Agent implements Steppable {
 
 
   /**
-   * Returns true @param probability amount of times.
+   * Returns True n times where n is given by {@param probability}
+   * @param state Simulation Containing all agents
+   * @param probability The probability that True is returned
+   * @return Value depending outcome dictated by {@param probability}
    */
   private boolean decision(Simulation state, double probability) {
     double random = state.random.nextDouble();
     return random <= probability;
   }
+
 
 }
