@@ -7,7 +7,6 @@ import sim.util.Double2D;
 import sim.util.MutableDouble2D;
 
 
-// TODO: Get JIM to move towards MATT if his Casey is coupled
 public class Jim extends Agent {
 
   private final Casey casey;
