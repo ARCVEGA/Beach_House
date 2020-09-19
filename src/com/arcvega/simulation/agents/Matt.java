@@ -28,10 +28,6 @@ public class Matt extends Agent {
     coupledCasey = casey;
   }
 
-  public void uncoupleCasey() {
-    this.coupledCasey = null;
-  }
-
   public boolean isCoupled() {
     return coupledCasey != null;
   }

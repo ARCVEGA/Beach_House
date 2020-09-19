@@ -5,7 +5,6 @@ import com.arcvega.simulation.config.SimConfig;
 import sim.engine.SimState;
 import sim.util.Bag;
 import sim.util.Double2D;
-import sim.util.MutableDouble2D;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -13,7 +12,6 @@ import java.util.stream.Stream;
 // TODO: Create method that keeps Casey within proximity of coupled Matt
 public class Casey extends Agent {
 
-  private final double thresholdDistance = 10;
   private Matt coupledMatt = null;
   private final double minCouplingDistance = 2;
 
@@ -23,15 +21,15 @@ public class Casey extends Agent {
     Bag potentialMatts = getMattsNearby(sim);
 
     /*If not coupled, find a potential matt, couple and move towards him*/
-    if (coupledMatt == null && !potentialMatts.isEmpty()) {
+    if (!isCoupled() && !potentialMatts.isEmpty()) {
       Matt mostAttractiveMatt = getMostAttractiveMatt(potentialMatts);
       Double2D mattVector = getVectorToAgent(sim, mostAttractiveMatt);
 
       // TODO: Need to address case when Matt is taken and no coupling happens
-      evalAndCouple(sim, mostAttractiveMatt, mattVector);
       walkTowards(sim, mattVector);
+      evalAndCouple(sim, mostAttractiveMatt, mattVector);
 
-    } else if (coupledMatt != null) {
+    } else if (isCoupled()) {
       if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(coupledMatt))
           > minCouplingDistance) {
         walkTowards(sim, getVectorToAgent(sim, coupledMatt));
@@ -69,7 +67,7 @@ public class Casey extends Agent {
 
 
   /**
-   * Filters all Matt agents which are uncoupled and within {@link Casey#thresholdDistance}
+   * Filters all Matt agents which are uncoupled and within predefined threshold distance
    *
    * @param sim Simulation where entities exist
    * @return Bag of filtered Matt agens
@@ -82,7 +80,7 @@ public class Casey extends Agent {
     potentialMatts.addAll(stream
         .filter(obj -> obj instanceof Matt)
         .filter(obj -> sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(obj))
-            < SimConfig.CASEY_THRESHOLD_DISTANCE))
+            < SimConfig.CASEY_THRESHOLD_DISTANCE)
         .filter(obj -> !((Matt) obj).isCoupled())
         .collect(Collectors.toList()));
 
