@@ -5,57 +5,73 @@ import com.arcvega.simulation.config.SimConfig;
 import sim.engine.SimState;
 import sim.util.Bag;
 import sim.util.Double2D;
-import sim.util.MutableDouble2D;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+// TODO: Create method that keeps Casey within proximity of coupled Matt
 public class Casey extends Agent {
+
+  private Matt coupledMatt = null;
 
   @Override
   public void step(SimState simState) {
     Simulation sim = (Simulation) simState;
     Bag potentialMatts = getMattsNearby(sim);
 
-    if (potentialMatts.isEmpty()) {
-      randomWalk((Simulation) simState);
+    /*If not coupled, find a potential matt, couple and move towards him*/
+    if (!isCoupled() && !potentialMatts.isEmpty()) {
+      Matt mostAttractiveMatt = getMostAttractiveMatt(potentialMatts);
+      Double2D mattVector = getVectorToAgent(sim, mostAttractiveMatt);
+
+      // TODO: Need to address case when Matt is taken and no coupling happens
+      walkTowards(sim, mattVector);
+      evalAndCouple(sim, mostAttractiveMatt, mattVector);
+
+    } else if (isCoupled()) {
+      if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(coupledMatt))
+          > SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
+        walkTowards(sim, getVectorToAgent(sim, coupledMatt));
+      }
     } else {
-      walkTowards(sim, getVectorToMostAttractiveMatt(sim, potentialMatts));
+      randomWalk((Simulation) simState);
     }
+
   }
 
   /**
-   * Produces a vector derived from the Casey's current location and the most attractive Matt
+   * Find most desirable Matt within Casey's proximity
    *
-   * @param sim Simulation containing Agents
    * @param potentialMatts Bag of all potential Matts to pick from
-   * @return Vector from Casey to Mat
+   * @return Most Attractive Matt
    */
-  private Double2D getVectorToMostAttractiveMatt(Simulation sim, Bag potentialMatts) {
-    Matt mostAttractiveMatt = (Matt) potentialMatts.get(0);
+  private Matt getMostAttractiveMatt(Bag potentialMatts) {
+
+    // TODO: Ensure that initial matt cant be paired if hes coupled already
+    Matt mostAttractiveMatt = null;
+
     for (Object obj : potentialMatts) {
       Matt matt = (Matt) obj;
 
-      if (matt.getCaseyAffinity() > mostAttractiveMatt.getCaseyAffinity()) {
+      if (mostAttractiveMatt == null) {
+        mostAttractiveMatt = matt;
+      } else if (matt.getCaseyAffinity() > mostAttractiveMatt
+          .getCaseyAffinity()) {
         mostAttractiveMatt = matt;
       }
     }
 
-    MutableDouble2D vectorTowardsMatt = new MutableDouble2D(
-        sim.space.getObjectLocation(mostAttractiveMatt).getX() - sim.space.getObjectLocation(this)
-            .getX(),
-        sim.space.getObjectLocation(mostAttractiveMatt).getY() - sim.space.getObjectLocation(this)
-            .getY());
-
-    // Prevent teleportation by scaling to unit vector
-    if (vectorTowardsMatt.length() != 0) {
-      vectorTowardsMatt.resize(1);
-    }
-
-    vectorTowardsMatt.addIn(sim.space.getObjectLocation(this));
-    return new Double2D(vectorTowardsMatt);
+    return mostAttractiveMatt;
   }
 
+
+  /**
+   * Filters all Matt agents which are uncoupled and within predefined threshold distance of {@link
+   * SimConfig#CASEY_MINIMUM_COUPLING_DISTANCE}
+   *
+   * @param sim Simulation where entities exist
+   * @return Bag of filtered Matt agens
+   */
   private Bag getMattsNearby(Simulation sim) {
     Bag potentialMatts = new Bag();
     Bag neighbours = sim.space.getAllObjects();
@@ -65,8 +81,31 @@ public class Casey extends Agent {
         .filter(obj -> obj instanceof Matt)
         .filter(obj -> sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(obj))
             < SimConfig.CASEY_THRESHOLD_DISTANCE)
+        .filter(obj -> !((Matt) obj).isCoupled())
         .collect(Collectors.toList()));
 
     return potentialMatts;
+  }
+
+  /**
+   * Evaluates if a Matt is ready to be coupled, if so then the couple is formed otherwise nothing
+   * happens and Casey remains unpaired
+   *
+   * @param potentialPartner {@link Matt} which has potential to be partnered
+   */
+  private void evalAndCouple(Simulation sim, Matt potentialPartner, Double2D vectorToMatt) {
+    if (!isCoupled() && vectorToMatt.distance(sim.space.getObjectLocation(potentialPartner))
+        <= SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
+      setCoupledMatt(potentialPartner);
+      coupledMatt.setCoupledCasey(this);
+    }
+  }
+
+  public void setCoupledMatt(Matt matt) {
+    this.coupledMatt = matt;
+  }
+
+  public boolean isCoupled() {
+    return coupledMatt != null;
   }
 }

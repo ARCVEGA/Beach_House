@@ -19,6 +19,8 @@ public class SimConfig {
   public static final int CASEY_AMOUNT = 200;
   /**Distance that a MATT has to be within to be considered by a CASEY*/
   public static final double CASEY_THRESHOLD_DISTANCE = 10;
+  /**Minimum distance required for CASEY to couple with MATT*/
+  public static final double CASEY_MINIMUM_COUPLING_DISTANCE = 2;
 
   /**Max distance that a JIM is from his corresponding CASEY*/
   public static final double JIM_THRESHOLD_DISTANCE = 5;

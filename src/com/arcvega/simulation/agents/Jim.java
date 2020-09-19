@@ -19,21 +19,8 @@ public class Jim extends Agent {
     if(sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(casey)) < SimConfig.JIM_THRESHOLD_DISTANCE)
       randomWalk((Simulation) simState);
     else{
-      walkTowards(sim, getVectorToCasey(sim));
+      walkTowards(sim, getVectorToAgent(sim, casey));
     }
   }
 
-  private Double2D getVectorToCasey(Simulation sim) {
-    MutableDouble2D vectorTowardsCasey = new MutableDouble2D(
-        sim.space.getObjectLocation(casey).getX() - sim.space.getObjectLocation(this)
-            .getX(),
-        sim.space.getObjectLocation(casey).getY() - sim.space.getObjectLocation(this)
-            .getY());
-    if (vectorTowardsCasey.length() != 0) {
-      vectorTowardsCasey.resize(1);
-    }
-
-    vectorTowardsCasey.addIn(sim.space.getObjectLocation(this));
-    return new Double2D(vectorTowardsCasey);
-  }
 }
