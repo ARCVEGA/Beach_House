@@ -29,7 +29,7 @@ public class Casey extends Agent {
         walkTowards(sim, getVectorToAgent(sim, coupledMatt));
       }
     } else {
-      randomWalk((Simulation)simState);
+      randomWalk((Simulation) simState);
     }
 
   }
@@ -37,7 +37,7 @@ public class Casey extends Agent {
   /**
    * TODO: Refactor this to give back most attractive matt rather than vector Produces a vector
    * derived from the Casey's current location and the most attractive Matt A Matt is ignored if it
-   * is coupled TODO: Get Casey to claim a Matt for herself
+   * is coupled
    *
    * @param sim            Simulation containing Agents
    * @param potentialMatts Bag of all potential Matts to pick from
@@ -82,8 +82,8 @@ public class Casey extends Agent {
   }
 
   /**
-   * @param sim
-   * @return
+   * @param sim Simulation where entities exist
+   * @return Bag of Matts which are not coupled and within {@link Casey#thresholdDistance}
    */
   private Bag getMattsNearby(Simulation sim) {
     Bag potentialMatts = new Bag();
