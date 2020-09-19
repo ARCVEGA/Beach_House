@@ -8,9 +8,15 @@ public class SimConfig {
   public static final int SIM_WIDTH = 200;
   /**Height of the 2D space */
   public static final int SIM_HEIGHT = 200;
+  /**Height of the 2D space */
+  public static final double intensityOfRandomWalk = 0.4;
+  /**Height of the 2D space */
+  public static final double intensityOfPullToCentre = 0.1;
+  /**Height of the 2D space */
+  public static final double probabiltyToBePulledToCentre = 0.01;
 
   /**Amount of CASEY agents in the simulation*/
-  public static final int CASEY_AMOUNT = 20;
+  public static final int CASEY_AMOUNT = 200;
   /**Distance that a MATT has to be within to be considered by a CASEY*/
   public static final double CASEY_THRESHOLD_DISTANCE = 10;
 
@@ -18,5 +24,5 @@ public class SimConfig {
   public static final double JIM_THRESHOLD_DISTANCE = 5;
 
   /**Amount of MATT agents in the simulation*/
-  public static final int MATT_AMOUNT = 20;
+  public static final int MATT_AMOUNT = 200;
 }
