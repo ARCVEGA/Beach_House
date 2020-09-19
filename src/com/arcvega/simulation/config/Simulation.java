@@ -9,7 +9,7 @@ import sim.util.Double2D;
 
 public class Simulation extends SimState {
 
-  public Continuous2D space = new Continuous2D(1, 200, 200);
+  public Continuous2D space = new Continuous2D(SimConfig.SIM_DISCRETIZATION, SimConfig.SIM_WIDTH, SimConfig.SIM_HEIGHT);
 
   /**
    * Constructor that automatically sets seed to the current time.
@@ -35,7 +35,7 @@ public class Simulation extends SimState {
 
     space.clear();
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < SimConfig.CASEY_AMOUNT; i++) {
       Casey casey = new Casey();
       Double2D caseyLocation = new Double2D(random.nextInt(200), random.nextInt(200));
       space.setObjectLocation(casey, caseyLocation);
@@ -46,7 +46,7 @@ public class Simulation extends SimState {
       schedule.scheduleRepeating(jim);
     }
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < SimConfig.MATT_AMOUNT; i++) {
       Matt matt = new Matt(this);
       space.setObjectLocation(matt, new Double2D(random.nextInt(200), random.nextInt(200)));
       schedule.scheduleRepeating(matt);

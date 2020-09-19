@@ -1,6 +1,7 @@
 package com.arcvega.simulation.agents;
 
 import com.arcvega.simulation.config.Simulation;
+import com.arcvega.simulation.config.SimConfig;
 import sim.engine.SimState;
 import sim.util.Bag;
 import sim.util.Double2D;
@@ -10,8 +11,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Casey extends Agent {
-
-  private final double thresholdDistance = 10;
 
   @Override
   public void step(SimState simState) {
@@ -65,7 +64,7 @@ public class Casey extends Agent {
     potentialMatts.addAll(stream
         .filter(obj -> obj instanceof Matt)
         .filter(obj -> sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(obj))
-            < thresholdDistance)
+            < SimConfig.CASEY_THRESHOLD_DISTANCE)
         .collect(Collectors.toList()));
 
     return potentialMatts;
