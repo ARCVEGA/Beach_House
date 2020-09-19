@@ -51,10 +51,23 @@ public abstract class Agent implements Steppable {
     previousModifier = new Double2D(modifier);
   }
 
+  /**
+   * Function that gets a unit vector in the direction of an agent
+   * @param sim Sim object
+   * @param agent Agent to move towards
+   * @return A unit vector in the direction of {@param agent}
+   */
   Double2D getVectorToAgent(Simulation sim, Agent agent) {
     return getVectorToAgent(sim, agent, 1.0);
   }
 
+  /**
+   * Function that gets a vector in the direction of an agent with length {@param scalar}
+   * @param sim Sim object
+   * @param agent Agent to move towards
+   * @param scalar Length of vector
+   * @return A vector in the direction of {@param agent}
+   */
   Double2D getVectorToAgent(Simulation sim, Agent agent, double scalar) {
     MutableDouble2D vectorTowardsAgent = new MutableDouble2D(
         sim.space.getObjectLocation(agent).getX() - sim.space.getObjectLocation(this)
