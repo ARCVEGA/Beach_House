@@ -21,8 +21,15 @@ public class Casey extends Agent {
     Simulation sim = (Simulation) simState;
     Bag potentialMatts = getMattsNearby(sim);
 
+    /*If not coupled, find a potential matt, couple and move towards him*/
     if (coupledMatt == null && !potentialMatts.isEmpty()) {
-      walkTowards(sim, getVectorToMostAttractiveMatt(sim, potentialMatts));
+      Matt mostAttractiveMatt = getMostAttractiveMatt(potentialMatts);
+      Double2D mattVector = getVectorToAgent(sim, mostAttractiveMatt);
+
+      // TODO: Need to address case when Matt is taken and no coupling happens
+      evalAndCouple(sim, mostAttractiveMatt, mattVector);
+      walkTowards(sim, mattVector);
+
     } else if (coupledMatt != null) {
       if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(coupledMatt))
           > minCouplingDistance) {
@@ -35,15 +42,12 @@ public class Casey extends Agent {
   }
 
   /**
-   * TODO: Refactor this to give back most attractive matt rather than vector Produces a vector
-   * derived from the Casey's current location and the most attractive Matt A Matt is ignored if it
-   * is coupled
+   * Find most desirable Matt within Casey's proximity
    *
-   * @param sim            Simulation containing Agents
    * @param potentialMatts Bag of all potential Matts to pick from
-   * @return Vector from Casey to Matt
+   * @return Most Attractive Matt
    */
-  private Double2D getVectorToMostAttractiveMatt(Simulation sim, Bag potentialMatts) {
+  private Matt getMostAttractiveMatt(Bag potentialMatts) {
 
     // TODO: Ensure that initial matt cant be paired if hes coupled already
     Matt mostAttractiveMatt = null;
@@ -59,31 +63,15 @@ public class Casey extends Agent {
       }
     }
 
-    MutableDouble2D vectorTowardsMatt = new MutableDouble2D(
-        sim.space.getObjectLocation(mostAttractiveMatt).getX() - sim.space.getObjectLocation(this)
-            .getX(),
-        sim.space.getObjectLocation(mostAttractiveMatt).getY() - sim.space.getObjectLocation(this)
-            .getY());
-
-    // Prevent teleportation by scaling to unit vector
-    if (vectorTowardsMatt.length() != 0) {
-      vectorTowardsMatt.resize(1);
-    }
-
-    vectorTowardsMatt.addIn(sim.space.getObjectLocation(this));
-
-    if (!isCoupled() && vectorTowardsMatt.distance(sim.space.getObjectLocation(mostAttractiveMatt))
-        <= minCouplingDistance) {
-      setCoupledMatt(mostAttractiveMatt);
-      coupledMatt.setCoupledCasey(this);
-    }
-
-    return new Double2D(vectorTowardsMatt);
+    return mostAttractiveMatt;
   }
 
+
   /**
+   * Filters all Matt agents which are uncoupled and within {@link Casey#thresholdDistance}
+   *
    * @param sim Simulation where entities exist
-   * @return Bag of Matts which are not coupled and within {@link Casey#thresholdDistance}
+   * @return Bag of filtered Matt agens
    */
   private Bag getMattsNearby(Simulation sim) {
     Bag potentialMatts = new Bag();
@@ -98,6 +86,20 @@ public class Casey extends Agent {
         .collect(Collectors.toList()));
 
     return potentialMatts;
+  }
+
+  /**
+   * Evaluates if a Matt is ready to be coupled with, if so then the couple is formed otherwise
+   * nothing happens and Casey remains unpaired
+   *
+   * @param potentialPartner {@link Matt} which has potential to be partnered
+   */
+  private void evalAndCouple(Simulation sim, Matt potentialPartner, Double2D vectorToMatt) {
+    if (!isCoupled() && vectorToMatt.distance(sim.space.getObjectLocation(potentialPartner))
+        <= minCouplingDistance) {
+      setCoupledMatt(potentialPartner);
+      coupledMatt.setCoupledCasey(this);
+    }
   }
 
   public void setCoupledMatt(Matt matt) {
