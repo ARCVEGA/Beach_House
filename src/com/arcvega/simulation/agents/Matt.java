@@ -60,7 +60,7 @@ public class Matt extends Agent {
 
   /**
    * Defines how Matt behaves if he is coupled to Casey, he will follow her and stay in a given
-   * radius defined by {@link SimConfig#CASEY_MINIMUM_COUPLING_DISTANCE}
+   * radius defined by {@link SimConfig#MATT_MINIMUM_COUPLING_DISTANCE}
    *
    * @param sim Simulation containing all agents
    */
@@ -126,7 +126,7 @@ public class Matt extends Agent {
    */
   private void evalAndCouple(Simulation sim, Casey potentialPartner, Double2D vectorToCasey) {
     if (!isCoupled() && vectorToCasey.distance(sim.space.getObjectLocation(potentialPartner))
-        <= SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
+        <= SimConfig.MATT_MINIMUM_COUPLING_DISTANCE) {
       setCoupledCasey(potentialPartner);
       this.coupledCasey.setCoupledMatt(this);
     }

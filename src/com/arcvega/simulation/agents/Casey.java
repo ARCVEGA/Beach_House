@@ -26,20 +26,13 @@ public class Casey extends Agent {
   @Override
   public void step(SimState simState) {
     Simulation sim = (Simulation) simState;
-    randomWalk(sim);
-
-    /*If not coupled, find a potential matt, couple and move towards him*/
-//    if (!isCoupled()) {
-//      uncoupledWalk(sim);
-//    } else {
-//      coupledWalk(sim);
-//    }
-
+    randomWalk(sim); // Only does random walk for now
   }
 
 
   /**
-   * Defines behaviour of how Casey walks if she is not currently coupled with a Matt
+   * Defines behaviour of how Casey walks if she is not currently coupled with a Matt but is
+   * actively looking for a potential partner
    *
    * @param sim Simulation containing agents
    */
