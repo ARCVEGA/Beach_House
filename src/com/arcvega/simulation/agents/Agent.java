@@ -41,7 +41,7 @@ public abstract class Agent implements Steppable {
           .addIn((SimConfig.SIM_HEIGHT / 2.0 - location.getX()) * SimConfig.intensityOfPullToCentre,
               (SimConfig.SIM_WIDTH / 2.0 - location.getY()) * SimConfig.intensityOfPullToCentre);
     }
-    
+
     modifier.resize(1);
 
     Double2D newLocation = new Double2D(location.getX() + modifier.getX(),
@@ -51,27 +51,24 @@ public abstract class Agent implements Steppable {
     previousModifier = new Double2D(modifier);
   }
 
-  
-    /**
-     *
-     * @param sim
-     * @param agent
-     * @return
-     */
-    Double2D getVectorToAgent(Simulation sim, Agent agent) {
-        MutableDouble2D vectorTowardsAgent = new MutableDouble2D(
-            sim.space.getObjectLocation(agent).getX() - sim.space.getObjectLocation(this)
-                .getX(),
-            sim.space.getObjectLocation(agent).getY() - sim.space.getObjectLocation(this)
-                .getY());
-        if (vectorTowardsAgent.length() != 0) {
-            vectorTowardsAgent.resize(1);
-        }
+  Double2D getVectorToAgent(Simulation sim, Agent agent) {
+    return getVectorToAgent(sim, agent, 1.0);
+  }
 
-        vectorTowardsAgent.addIn(sim.space.getObjectLocation(this));
-        return new Double2D(vectorTowardsAgent);
+  Double2D getVectorToAgent(Simulation sim, Agent agent, double scalar) {
+    MutableDouble2D vectorTowardsAgent = new MutableDouble2D(
+        sim.space.getObjectLocation(agent).getX() - sim.space.getObjectLocation(this)
+            .getX(),
+        sim.space.getObjectLocation(agent).getY() - sim.space.getObjectLocation(this)
+            .getY());
+    if (vectorTowardsAgent.length() != 0) {
+      vectorTowardsAgent.resize(scalar);
     }
-   
+
+    vectorTowardsAgent.addIn(sim.space.getObjectLocation(this));
+    return new Double2D(vectorTowardsAgent);
+  }
+
 
   /**
    * Returns true @param probability amount of times.

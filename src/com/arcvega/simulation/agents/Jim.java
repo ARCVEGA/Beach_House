@@ -55,13 +55,7 @@ public class Jim extends Agent {
       randomWalk(sim);
     } else {
       MutableDouble2D aggressiveVector = new MutableDouble2D(
-          getVectorToAgent(sim, casey.getCoupledMatt()));
-      /*Difference as a vector from Jim to Matt and scale said difference by predefined scalar*/
-      aggressiveVector.addIn(
-          new Double2D((aggressiveVector.x - sim.space.getObjectLocation(this).x)
-              * SimConfig.JIM_CHARGE_MATT_SCALAR,
-              (aggressiveVector.y - sim.space.getObjectLocation(this).y)
-                  * SimConfig.JIM_CHARGE_MATT_SCALAR));
+          getVectorToAgent(sim, casey.getCoupledMatt(), SimConfig.JIM_CHARGE_MATT_SCALAR));
       /*Perform walk to Matt using aggressive vector*/
       walkTowards(sim, new Double2D(aggressiveVector));
     }
