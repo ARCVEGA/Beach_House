@@ -112,7 +112,6 @@ public class Matt extends Agent {
     }
 
     return mostAttractiveCasey;
-
   }
 
   // TODO: This seems like it would be a good fit for a generic method

@@ -30,16 +30,16 @@ public abstract class Agent implements Steppable {
     } else {
       modifier = new MutableDouble2D(
           previousModifier.getX()
-              + (sim.random.nextDouble() - 0.5) * SimConfig.intensityOfRandomWalk,
+              + (sim.random.nextDouble() - 0.5) * SimConfig.INTENSITY_OF_RANDOM_WALK,
           previousModifier.getY()
-              + (sim.random.nextDouble() - 0.5) * SimConfig.intensityOfRandomWalk);
+              + (sim.random.nextDouble() - 0.5) * SimConfig.INTENSITY_OF_RANDOM_WALK);
     }
 
     //Every time decision return true, they are pulled to the centre slightly
-    if (decision(sim, SimConfig.probabiltyToBePulledToCentre)) {
+    if (decision(sim, SimConfig.PROBABILTY_TO_BE_PULLED_TO_CENTRE)) {
       modifier
-          .addIn((SimConfig.SIM_HEIGHT / 2.0 - location.getX()) * SimConfig.intensityOfPullToCentre,
-              (SimConfig.SIM_WIDTH / 2.0 - location.getY()) * SimConfig.intensityOfPullToCentre);
+          .addIn((SimConfig.SIM_HEIGHT / 2.0 - location.getX()) * SimConfig.INTENSITY_OF_PULL_TO_CENTRE,
+              (SimConfig.SIM_WIDTH / 2.0 - location.getY()) * SimConfig.INTENSITY_OF_PULL_TO_CENTRE);
     }
 
     modifier.resize(1);
