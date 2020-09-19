@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 public class Casey extends Agent {
 
   private Matt coupledMatt = null;
-  private final double minCouplingDistance = 2;
 
   @Override
   public void step(SimState simState) {
@@ -31,7 +30,7 @@ public class Casey extends Agent {
 
     } else if (isCoupled()) {
       if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(coupledMatt))
-          > minCouplingDistance) {
+          > SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
         walkTowards(sim, getVectorToAgent(sim, coupledMatt));
       }
     } else {
@@ -67,7 +66,8 @@ public class Casey extends Agent {
 
 
   /**
-   * Filters all Matt agents which are uncoupled and within predefined threshold distance
+   * Filters all Matt agents which are uncoupled and within predefined threshold distance of {@link
+   * SimConfig#CASEY_MINIMUM_COUPLING_DISTANCE}
    *
    * @param sim Simulation where entities exist
    * @return Bag of filtered Matt agens
@@ -88,14 +88,14 @@ public class Casey extends Agent {
   }
 
   /**
-   * Evaluates if a Matt is ready to be coupled with, if so then the couple is formed otherwise
-   * nothing happens and Casey remains unpaired
+   * Evaluates if a Matt is ready to be coupled, if so then the couple is formed otherwise nothing
+   * happens and Casey remains unpaired
    *
    * @param potentialPartner {@link Matt} which has potential to be partnered
    */
   private void evalAndCouple(Simulation sim, Matt potentialPartner, Double2D vectorToMatt) {
     if (!isCoupled() && vectorToMatt.distance(sim.space.getObjectLocation(potentialPartner))
-        <= minCouplingDistance) {
+        <= SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
       setCoupledMatt(potentialPartner);
       coupledMatt.setCoupledCasey(this);
     }
