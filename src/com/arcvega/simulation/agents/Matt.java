@@ -8,6 +8,8 @@ public class Matt extends Agent {
   /**Casey affinity is the quantified amount that a Casey
    * likes a particular Matt*/
   private final int caseyAffinity;
+  /**Instance of coupled Casey initially set to null*/
+  private Casey coupledCasey = null;
 
   public Matt(SimState simState){
     caseyAffinity = simState.random.nextInt(100);
@@ -20,5 +22,17 @@ public class Matt extends Agent {
 
   public int getCaseyAffinity() {
     return caseyAffinity;
+  }
+
+  public void setCoupledCasey(Casey casey) {
+    coupledCasey = casey;
+  }
+
+  public void uncoupleCasey() {
+    this.coupledCasey = null;
+  }
+
+  public boolean isCoupled() {
+    return coupledCasey != null;
   }
 }
