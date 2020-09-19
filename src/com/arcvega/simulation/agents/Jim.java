@@ -20,9 +20,9 @@ public class Jim extends Agent {
     Simulation sim = (Simulation) simState;
 
     if (!this.casey.isCoupled()) {
-      stepForUncoupled(sim);
+      keepNearCasey(sim);
     } else {
-      stepForCoupled(sim);
+      chargeAtMatt(sim);
     }
 
   }
@@ -32,7 +32,7 @@ public class Jim extends Agent {
    *
    * @param sim Simulation containing the agents
    */
-  private void stepForUncoupled(Simulation sim) {
+  private void keepNearCasey(Simulation sim) {
     if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(casey))
         < SimConfig.JIM_THRESHOLD_DISTANCE) {
       randomWalk(sim);
@@ -43,11 +43,12 @@ public class Jim extends Agent {
 
 
   /**
-   * Jim becomes agitated and moves towards Matt for a confrontation
+   * Jim becomes agitated and moves towards Matt for a confrontation rather quickly and
+   * aggressively
    *
    * @param sim Simulation containing Agents
    */
-  private void stepForCoupled(Simulation sim) {
+  private void chargeAtMatt(Simulation sim) {
     if (sim.space.getObjectLocation(this)
         .distance(sim.space.getObjectLocation(this.casey.getCoupledMatt()))
         < SimConfig.JIM_MAX_DISTANCE_FROM_MATT) {
@@ -55,12 +56,13 @@ public class Jim extends Agent {
     } else {
       MutableDouble2D aggressiveVector = new MutableDouble2D(
           getVectorToAgent(sim, casey.getCoupledMatt()));
-      /**Make Jim move towards Matt rapidly*/
+      /*Difference as a vector from Jim to Matt and scale said difference by predefined scalar*/
       aggressiveVector.addIn(
           new Double2D((aggressiveVector.x - sim.space.getObjectLocation(this).x)
               * SimConfig.JIM_CHARGE_MATT_SCALAR,
               (aggressiveVector.y - sim.space.getObjectLocation(this).y)
-              * SimConfig.JIM_CHARGE_MATT_SCALAR));
+                  * SimConfig.JIM_CHARGE_MATT_SCALAR));
+      /*Perform walk to Matt using aggressive vector*/
       walkTowards(sim, new Double2D(aggressiveVector));
     }
   }

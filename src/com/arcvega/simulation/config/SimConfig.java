@@ -16,7 +16,7 @@ public class SimConfig {
   public static final double probabiltyToBePulledToCentre = 0.01;
 
   /**Amount of CASEY agents in the simulation*/
-  public static final int CASEY_AMOUNT = 20;
+  public static final int CASEY_AMOUNT = 200;
   /**Distance that a MATT has to be within to be considered by a CASEY*/
   public static final double CASEY_THRESHOLD_DISTANCE = 10;
   /**Minimum distance required for CASEY to couple with MATT*/
@@ -30,5 +30,5 @@ public class SimConfig {
   public static final double JIM_CHARGE_MATT_SCALAR = 0.5;
 
   /**Amount of MATT agents in the simulation*/
-  public static final int MATT_AMOUNT = 5;
+  public static final int MATT_AMOUNT = 200;
 }
