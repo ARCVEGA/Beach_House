@@ -20,7 +20,7 @@ public class Matt extends Agent {
   private Casey coupledCasey = null;
 
   public Matt(SimState simState) {
-    caseyAffinity = simState.random.nextInt(100);
+    caseyAffinity = simState.random.nextInt(60);
   }
 
   @Override
@@ -53,6 +53,8 @@ public class Matt extends Agent {
     Casey mostAttraciveCasey = getMostAttractiveCasey(potentialCaseys);
     Double2D vecToCasey = getVectorToAgent(sim, mostAttraciveCasey);
 
+    // TODO: Only one of the agents should perform the coupling process, otherwise the same
+    //  process happens twice and is a waste of computational resources
     walkTowards(sim, vecToCasey);
     evalAndCouple(sim, mostAttraciveCasey, vecToCasey);
   }
@@ -129,8 +131,8 @@ public class Matt extends Agent {
   private void evalAndCouple(Simulation sim, Casey potentialPartner, Double2D vectorToCasey) {
     if (!isCoupled() && vectorToCasey.distance(sim.space.getObjectLocation(potentialPartner))
         <= SimConfig.MATT_MINIMUM_COUPLING_DISTANCE) {
-      setCoupledCasey(potentialPartner);
-      this.coupledCasey.setCoupledMatt(this);
+      // Matt currently has no standards
+        setCoupledCasey(potentialPartner);
     }
   }
 
@@ -138,8 +140,18 @@ public class Matt extends Agent {
     return caseyAffinity;
   }
 
+
+  /**
+   * Couples with a Casey or sets her on the blacklist if Matt is rejected
+   * @param casey Casey which is being asked to couple
+   */
   public void setCoupledCasey(Casey casey) {
-    coupledCasey = casey;
+    if (casey.isWillingToCouple(this)) {
+      coupledCasey = casey;
+      this.coupledCasey.setCoupledMatt(this);
+    } else {
+      setOnBlacklist(casey);
+    }
   }
 
   public Casey getCoupledCasey() {

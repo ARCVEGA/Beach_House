@@ -39,6 +39,7 @@ public class Casey extends Agent {
    * actively looking for a potential partner
    *
    * @param sim Simulation containing agents
+   * @apiNote This method is currently not used, since {@link Matt} does the coupling
    */
   private void uncoupledWalk(Simulation sim) {
     Bag potentialMatts = getMattsNearby(sim);
@@ -117,6 +118,7 @@ public class Casey extends Agent {
    * happens and Casey remains unpaired
    *
    * @param potentialPartner {@link Matt} which has potential to be partnered
+   * @apiNote This method is currently not used, since {@link Matt} does the coupling
    */
   private void evalAndCouple(Simulation sim, Matt potentialPartner, Double2D vectorToMatt) {
     if (!isCoupled() && vectorToMatt.distance(sim.space.getObjectLocation(potentialPartner))
@@ -124,6 +126,25 @@ public class Casey extends Agent {
       setCoupledMatt(potentialPartner);
       coupledMatt.setCoupledCasey(this);
     }
+  }
+
+
+  /**
+   * @param potentialPartner Partner which is being asked if they want to couple
+   * @return Response that Casey gives to Matt
+   */
+  @Override
+  public boolean isWillingToCouple(Agent potentialPartner) {
+    Matt potentialMatt = (Matt) potentialPartner;
+
+    // TODO: This is just temporary and should be refined once the Standards and
+    //  Genetics have been implemented
+    if (potentialMatt.getCaseyAffinity() >= this.mattAffinity - (this.mattAffinity) * 0.5) {
+      return true;
+    }
+
+    setOnBlacklist(potentialPartner);
+    return false;
   }
 
   public Matt getCoupledMatt() {

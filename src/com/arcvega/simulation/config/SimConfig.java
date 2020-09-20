@@ -21,6 +21,8 @@ public class SimConfig {
   public static final double CASEY_THRESHOLD_DISTANCE = 10;
   /**Minimum distance required for CASEY to couple with MATT*/
   public static final double CASEY_MINIMUM_COUPLING_DISTANCE = 2;
+  /**Maximum number of MATT agents that CASEY can blacklist*/
+  public static final int CASEY_MAXIMUM_BLACKLIST_SIZE = 5;
 
   /**Max distance that a JIM is from his corresponding CASEY*/
   public static final double JIM_THRESHOLD_DISTANCE = 50;
@@ -35,6 +37,8 @@ public class SimConfig {
   public static final double MATT_THRESHOLD_DISTANCE = 10;
   /**Minimum distance needed for MATT to couple with CASEY*/
   public static final double MATT_MINIMUM_COUPLING_DISTANCE = 15;
+  /**Maximum number of CASEY agents that MATT can have on the blacklist*/
+  public static final double MATT_MAXIMUM_BLACKLIST_SIZE = 5;
 
 
   /**Scalar which dictates flight response for now*/
