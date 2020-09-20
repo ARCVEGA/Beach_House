@@ -13,30 +13,57 @@ import java.util.stream.Stream;
 public class Casey extends Agent {
 
   private Matt coupledMatt = null;
+  /**
+   * the affinity describes the how attractive this Casey is to the Matt agent from 0 to 100
+   */
+  private final int mattAffinity;
+
+
+  public Casey(SimState simState) {
+    this.mattAffinity = simState.random.nextInt(100);
+  }
 
   @Override
   public void step(SimState simState) {
     Simulation sim = (Simulation) simState;
+    randomWalk(sim); // Only does random walk for now
+  }
+
+
+  /**
+   * Defines behaviour of how Casey walks if she is not currently coupled with a Matt but is
+   * actively looking for a potential partner
+   *
+   * @param sim Simulation containing agents
+   */
+  private void uncoupledWalk(Simulation sim) {
     Bag potentialMatts = getMattsNearby(sim);
 
-    /*If not coupled, find a potential matt, couple and move towards him*/
-    if (!isCoupled() && !potentialMatts.isEmpty()) {
-      Matt mostAttractiveMatt = getMostAttractiveMatt(potentialMatts);
-      Double2D mattVector = getVectorToAgent(sim, mostAttractiveMatt);
-
-      // TODO: Need to address case when Matt is taken and no coupling happens
-      walkTowards(sim, mattVector);
-      evalAndCouple(sim, mostAttractiveMatt, mattVector);
-
-    } else if (isCoupled()) {
-      if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(coupledMatt))
-          > SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
-        walkTowards(sim, getVectorToAgent(sim, coupledMatt));
-      }
-    } else {
-      randomWalk((Simulation) simState);
+    if (potentialMatts.isEmpty()) {
+      randomWalk(sim);
+      return;
     }
 
+    Matt mostAttractiveMatt = getMostAttractiveMatt(potentialMatts);
+    Double2D mattVector = getVectorToAgent(sim, mostAttractiveMatt);
+
+    walkTowards(sim, mattVector);
+    evalAndCouple(sim, mostAttractiveMatt, mattVector);
+  }
+
+
+  /**
+   * Defines how Casey walks if she is coupled with a Matt at this time
+   *
+   * @param sim Simulation containing agents
+   */
+  private void coupledWalk(Simulation sim) {
+    if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(coupledMatt))
+        > SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
+      walkTowards(sim, getVectorToAgent(sim, coupledMatt));
+    } else {
+      randomWalk(sim);
+    }
   }
 
   /**
@@ -110,5 +137,9 @@ public class Casey extends Agent {
 
   public boolean isCoupled() {
     return coupledMatt != null;
+  }
+
+  public int getMattAffinity() {
+    return mattAffinity;
   }
 }

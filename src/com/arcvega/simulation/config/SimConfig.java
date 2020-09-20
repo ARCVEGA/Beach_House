@@ -9,11 +9,11 @@ public class SimConfig {
   /**Height of the 2D space */
   public static final int SIM_HEIGHT = 200;
   /**Height of the 2D space */
-  public static final double intensityOfRandomWalk = 0.4;
+  public static final double INTENSITY_OF_RANDOM_WALK = 0.4;
   /**Height of the 2D space */
-  public static final double intensityOfPullToCentre = 0.1;
+  public static final double INTENSITY_OF_PULL_TO_CENTRE = 0.1;
   /**Height of the 2D space */
-  public static final double probabiltyToBePulledToCentre = 0.01;
+  public static final double PROBABILTY_TO_BE_PULLED_TO_CENTRE = 0.01;
 
   /**Amount of CASEY agents in the simulation*/
   public static final int CASEY_AMOUNT = 200;
@@ -31,4 +31,8 @@ public class SimConfig {
 
   /**Amount of MATT agents in the simulation*/
   public static final int MATT_AMOUNT = 200;
+  /**Max radius where potential CASEY partners can exist*/
+  public static final double MATT_THRESHOLD_DISTANCE = 10;
+  /**Minimum distance needed for MATT to couple with CASEY*/
+  public static final double MATT_MINIMUM_COUPLING_DISTANCE = 15;
 }

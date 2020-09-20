@@ -36,7 +36,7 @@ public class Simulation extends SimState {
     space.clear();
 
     for (int i = 0; i < SimConfig.CASEY_AMOUNT; i++) {
-      Casey casey = new Casey();
+      Casey casey = new Casey(this);
       Double2D caseyLocation = new Double2D(random.nextInt(200), random.nextInt(200));
       space.setObjectLocation(casey, caseyLocation);
       schedule.scheduleRepeating(casey);
