@@ -11,8 +11,12 @@ public abstract class Agent implements Steppable {
 
   private Double2D previousModifier = null;
   private LinkedList<Agent> agentBlacklist = new LinkedList<>(); // This will cause type erasure
+  int standard;
 
-
+  Agent(Simulation sim){
+    standard = sim.random.nextInt(100);
+  }
+  
   /**
    * Function that provides a simple wrapper around moving to a location for readability.
    */
@@ -167,4 +171,7 @@ public abstract class Agent implements Steppable {
     return this.agentBlacklist;
   }
 
+  public int getStandard() {
+    return standard;
+  }
 }

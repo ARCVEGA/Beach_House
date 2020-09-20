@@ -41,7 +41,7 @@ public class Simulation extends SimState {
       space.setObjectLocation(casey, caseyLocation);
       schedule.scheduleRepeating(casey);
 
-      Jim jim = new Jim(casey);
+      Jim jim = new Jim(this, casey);
       space.setObjectLocation(jim, caseyLocation);
       schedule.scheduleRepeating(jim);
     }
