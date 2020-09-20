@@ -9,6 +9,11 @@ import sim.util.MutableDouble2D;
 public abstract class Agent implements Steppable {
 
   private Double2D previousModifier = null;
+  int standard;
+
+  Agent(Simulation sim){
+    standard = sim.random.nextInt(100);
+  }
 
   /**
    * Function that provides a simple wrapper around moving to a location for readability.
@@ -133,5 +138,7 @@ public abstract class Agent implements Steppable {
     }
   }
 
-
+  public int getStandard() {
+    return standard;
+  }
 }

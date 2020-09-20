@@ -19,8 +19,9 @@ public class Matt extends Agent {
    */
   private Casey coupledCasey = null;
 
-  public Matt(SimState simState) {
-    caseyAffinity = simState.random.nextInt(100);
+  public Matt(Simulation sim) {
+    super(sim);
+    caseyAffinity = sim.random.nextInt(100);
   }
 
   @Override
@@ -89,6 +90,7 @@ public class Matt extends Agent {
         .filter(obj -> sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(obj))
             < SimConfig.MATT_THRESHOLD_DISTANCE)
         .filter(obj -> !((Casey) obj).isCoupled())
+        .filter(obj -> ((Casey) obj).getMattAffinity() > this.getStandard())
         .collect(Collectors.toList()));
 
     return potentialCaseys;
@@ -127,8 +129,10 @@ public class Matt extends Agent {
    * @param potentialPartner {@link Casey} which has potential to be partnered
    */
   private void evalAndCouple(Simulation sim, Casey potentialPartner, Double2D vectorToCasey) {
-    if (!isCoupled() && vectorToCasey.distance(sim.space.getObjectLocation(potentialPartner))
-        <= SimConfig.MATT_MINIMUM_COUPLING_DISTANCE) {
+    if (!isCoupled() &&
+        vectorToCasey.distance(sim.space.getObjectLocation(potentialPartner))
+            <= SimConfig.MATT_MINIMUM_COUPLING_DISTANCE &&
+        this.caseyAffinity > potentialPartner.getStandard()) {
       setCoupledCasey(potentialPartner);
       this.coupledCasey.setCoupledMatt(this);
     }

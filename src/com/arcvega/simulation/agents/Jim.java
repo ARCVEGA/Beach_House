@@ -11,7 +11,8 @@ public class Jim extends Agent {
 
   private final Casey casey;
 
-  public Jim(Casey casey) {
+  public Jim(Simulation sim, Casey casey) {
+    super(sim);
     this.casey = casey;
   }
 
