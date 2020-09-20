@@ -11,12 +11,13 @@ public abstract class Agent implements Steppable {
 
   private Double2D previousModifier = null;
   private LinkedList<Agent> agentBlacklist = new LinkedList<>(); // This will cause type erasure
+  Agent coupledAgent = null;
   int standard;
 
-  Agent(Simulation sim){
+  Agent(Simulation sim) {
     standard = sim.random.nextInt(100);
   }
-  
+
   /**
    * Function that provides a simple wrapper around moving to a location for readability.
    */
@@ -156,16 +157,24 @@ public abstract class Agent implements Steppable {
     }
   }
 
-
-  /**
-   * Method which should be overwritten to define if agent is willing to couple
-   *
-   * @param potentialPartner Partner which is being asked if they want to couple
-   * @return Response from partner
-   */
-  public boolean isWillingToCouple(Agent potentialPartner) {
-    return true;
+  public void setCoupledAgent(Agent agent) {
+    this.coupledAgent = agent;
   }
+
+  public boolean isCoupled() {
+    return coupledAgent != null;
+  }
+
+
+//  /**
+//   * Method which should be overwritten to define if agent is willing to couple
+//   *
+//   * @param potentialPartner Partner which is being asked if they want to couple
+//   * @return Response from partner
+//   */
+//  public boolean isWillingToCouple(Agent potentialPartner) {
+//    return true;
+//  }
 
   public LinkedList<Agent> getAgentBlacklist() {
     return this.agentBlacklist;

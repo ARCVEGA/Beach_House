@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 
 public class Casey extends Agent {
 
-  private Matt coupledMatt = null;
   /**
    * the affinity describes the how attractive this Casey is to the Matt agent from 0 to 100
    */
@@ -114,13 +113,6 @@ public class Casey extends Agent {
     return potentialMatts;
   }
 
-  public boolean isWillingToCouple(Matt matt) {
-    if (this.isCoupled()) {
-      return false;
-    }
-
-    return matt.getCaseyAffinity() > this.getStandard();
-  }
 
   /**
    * Evaluates if a Matt is ready to be coupled, if so then the couple is formed otherwise nothing
@@ -133,8 +125,8 @@ public class Casey extends Agent {
     if (!isCoupled() && vectorToMatt.distance(sim.space.getObjectLocation(potentialPartner))
         <= SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE &&
         this.getMattAffinity() > potentialPartner.getStandard()) {
-      setCoupledMatt(potentialPartner);
-      coupledMatt.setCoupledCasey(this);
+      setCoupledAgent(potentialPartner);
+      coupledAgent.setCoupledAgent(this);
     }
   }
 
@@ -143,13 +135,12 @@ public class Casey extends Agent {
    * @param potentialPartner Partner which is being asked if they want to couple
    * @return Response that Casey gives to Matt
    */
-  @Override
-  public boolean isWillingToCouple(Agent potentialPartner) {
-    Matt potentialMatt = (Matt) potentialPartner;
+  public boolean isWillingToCouple(Matt potentialPartner) {
+    if (this.isCoupled()) {
+      return false;
+    }
 
-    // TODO: This is just temporary and should be refined once the Standards and
-    //  Genetics have been implemented
-    if (potentialMatt.getCaseyAffinity() >= this.mattAffinity - (this.mattAffinity) * 0.5) {
+    if (potentialPartner.getCaseyAffinity() > this.getStandard()) {
       return true;
     }
 
@@ -158,16 +149,9 @@ public class Casey extends Agent {
   }
 
   public Matt getCoupledMatt() {
-    return this.coupledMatt;
+    return (Matt) this.coupledAgent;
   }
 
-  public void setCoupledMatt(Matt matt) {
-    this.coupledMatt = matt;
-  }
-
-  public boolean isCoupled() {
-    return coupledMatt != null;
-  }
 
   public int getMattAffinity() {
     return mattAffinity;

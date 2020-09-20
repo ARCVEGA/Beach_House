@@ -14,15 +14,11 @@ public class Matt extends Agent {
    * Casey affinity is the quantified amount that a Casey likes a particular Matt
    */
   private final int caseyAffinity;
-  /**
-   * Instance of coupled Casey initially set to null
-   */
-  private Casey coupledCasey = null;
 
 
   public Matt(Simulation sim) {
     super(sim);
-    caseyAffinity = sim.random.nextInt(100);
+    caseyAffinity = sim.random.nextInt(8);
   }
 
   @Override
@@ -69,9 +65,9 @@ public class Matt extends Agent {
    * @param sim Simulation containing all agents
    */
   private void coupledWalk(Simulation sim) {
-    if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(coupledCasey))
+    if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(coupledAgent))
         > SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
-      walkTowards(sim, getVectorToAgent(sim, coupledCasey, SimConfig.FLIGHT_RESPONSE));
+      walkTowards(sim, getVectorToAgent(sim, coupledAgent, SimConfig.FLIGHT_RESPONSE));
     } else {
       randomWalk(sim, SimConfig.FLIGHT_RESPONSE);
     }
@@ -134,10 +130,13 @@ public class Matt extends Agent {
   private void evalAndCouple(Simulation sim, Casey potentialPartner, Double2D vectorToCasey) {
     if (!isCoupled() &&
         vectorToCasey.distance(sim.space.getObjectLocation(potentialPartner))
-            <= SimConfig.MATT_MINIMUM_COUPLING_DISTANCE &&
-        potentialPartner.isWillingToCouple(this)) {
-      setCoupledCasey(potentialPartner);
-      potentialPartner.setCoupledMatt(this);
+            <= SimConfig.MATT_MINIMUM_COUPLING_DISTANCE) {
+      if (potentialPartner.isWillingToCouple(this)) {
+        setCoupledAgent(potentialPartner);
+        potentialPartner.setCoupledAgent(this);
+      } else {
+        setOnBlacklist(potentialPartner);
+      }
     }
   }
 
@@ -146,25 +145,8 @@ public class Matt extends Agent {
   }
 
 
-  /**
-   * Couples with a Casey or sets her on the blacklist if Matt is rejected
-   *
-   * @param casey Casey which is being asked to couple
-   */
-  public void setCoupledCasey(Casey casey) {
-    if (casey.isWillingToCouple(this)) {
-      coupledCasey = casey;
-      this.coupledCasey.setCoupledMatt(this);
-    } else {
-      setOnBlacklist(casey);
-    }
-  }
-
   public Casey getCoupledCasey() {
-    return coupledCasey;
+    return (Casey) this.coupledAgent;
   }
 
-  public boolean isCoupled() {
-    return coupledCasey != null;
-  }
 }

@@ -34,7 +34,7 @@ public class SimConfig {
   /**Amount of MATT agents in the simulation*/
   public static final int MATT_AMOUNT = 200;
   /**Max radius where potential CASEY partners can exist*/
-  public static final double MATT_THRESHOLD_DISTANCE = 10;
+  public static final double MATT_THRESHOLD_DISTANCE = 100;
   /**Minimum distance needed for MATT to couple with CASEY*/
   public static final double MATT_MINIMUM_COUPLING_DISTANCE = 15;
   /**Maximum number of CASEY agents that MATT can have on the blacklist*/
