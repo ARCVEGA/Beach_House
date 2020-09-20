@@ -26,7 +26,11 @@ public class Casey extends Agent {
   @Override
   public void step(SimState simState) {
     Simulation sim = (Simulation) simState;
-    randomWalk(sim); // Only does random walk for now
+    if (!isCoupled()) {
+      randomWalk(sim); // Only does random walk for now
+    } else {
+      coupledWalk(sim);
+    }
   }
 
 
@@ -58,12 +62,7 @@ public class Casey extends Agent {
    * @param sim Simulation containing agents
    */
   private void coupledWalk(Simulation sim) {
-    if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(coupledMatt))
-        > SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
-      walkTowards(sim, getVectorToAgent(sim, coupledMatt));
-    } else {
-      randomWalk(sim);
-    }
+    randomWalk(sim, SimConfig.FLIGHT_RESPONSE);
   }
 
   /**

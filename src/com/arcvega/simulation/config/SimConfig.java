@@ -13,7 +13,7 @@ public class SimConfig {
   /**Height of the 2D space */
   public static final double INTENSITY_OF_PULL_TO_CENTRE = 0.1;
   /**Height of the 2D space */
-  public static final double PROBABILTY_TO_BE_PULLED_TO_CENTRE = 0.01;
+  public static final double PROBABILITY_TO_BE_PULLED_TO_CENTRE = 0.01;
 
   /**Amount of CASEY agents in the simulation*/
   public static final int CASEY_AMOUNT = 200;
@@ -35,4 +35,8 @@ public class SimConfig {
   public static final double MATT_THRESHOLD_DISTANCE = 10;
   /**Minimum distance needed for MATT to couple with CASEY*/
   public static final double MATT_MINIMUM_COUPLING_DISTANCE = 15;
+
+
+  /**Scalar which dictates flight response for now*/
+  public static final double FLIGHT_RESPONSE = 2.0; // TODO: This will eventually be done by genetics
 }
