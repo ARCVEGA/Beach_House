@@ -113,6 +113,14 @@ public class Casey extends Agent {
     return potentialMatts;
   }
 
+  public boolean isWillingToCouple(Matt matt) {
+    if (this.isCoupled()) {
+      return false;
+    }
+
+    return matt.getCaseyAffinity() > this.getStandard();
+  }
+
   /**
    * Evaluates if a Matt is ready to be coupled, if so then the couple is formed otherwise nothing
    * happens and Casey remains unpaired
