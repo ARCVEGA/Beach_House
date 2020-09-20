@@ -23,6 +23,18 @@ public abstract class Agent implements Steppable {
    * @param sim Simulation containing all agents
    */
   void randomWalk(Simulation sim) {
+    randomWalk(sim, 1.0);
+  }
+
+
+  /**
+   * Randomly walks the agent and scales the resultant vector by {@param vecScalar}
+   *
+   * @param sim       Simulation containing agent
+   * @param vecScalar Scalar by which vector will be adjusted
+   */
+  void randomWalk(Simulation sim, double vecScalar) {
+
     Double2D location = sim.space.getObjectLocation(this);
     MutableDouble2D modifier;
 
@@ -38,13 +50,17 @@ public abstract class Agent implements Steppable {
     }
 
     //Every time decision return true, they are pulled to the centre slightly
-    if (decision(sim, SimConfig.PROBABILTY_TO_BE_PULLED_TO_CENTRE)) {
+    if (decision(sim, SimConfig.PROBABILITY_TO_BE_PULLED_TO_CENTRE)) {
       modifier
-          .addIn((SimConfig.SIM_HEIGHT / 2.0 - location.getX()) * SimConfig.INTENSITY_OF_PULL_TO_CENTRE,
-              (SimConfig.SIM_WIDTH / 2.0 - location.getY()) * SimConfig.INTENSITY_OF_PULL_TO_CENTRE);
+          .addIn((SimConfig.SIM_HEIGHT / 2.0 - location.getX())
+                  * SimConfig.INTENSITY_OF_PULL_TO_CENTRE,
+              (SimConfig.SIM_WIDTH / 2.0 - location.getY())
+                  * SimConfig.INTENSITY_OF_PULL_TO_CENTRE);
     }
 
-    modifier.resize(1);
+    if (modifier.length() != 0) {
+      modifier.resize(vecScalar);
+    }
 
     Double2D newLocation = new Double2D(location.getX() + modifier.getX(),
         location.getY() + modifier.getY());
@@ -55,7 +71,8 @@ public abstract class Agent implements Steppable {
 
   /**
    * Function that gets a unit vector in the direction of an agent
-   * @param sim Sim object
+   *
+   * @param sim   Simulation object
    * @param agent Agent to move towards
    * @return A unit vector in the direction of {@param agent}
    */
@@ -65,8 +82,9 @@ public abstract class Agent implements Steppable {
 
   /**
    * Function that gets a vector in the direction of an agent with length {@param scalar}
-   * @param sim Sim object
-   * @param agent Agent to move towards
+   *
+   * @param sim    Sim object
+   * @param agent  Agent to move towards
    * @param scalar Length of vector
    * @return A vector in the direction of {@param agent}
    */
@@ -87,13 +105,32 @@ public abstract class Agent implements Steppable {
 
   /**
    * Returns True n times where n is given by {@param probability}
-   * @param state Simulation Containing all agents
+   *
+   * @param state       Simulation Containing all agents
    * @param probability The probability that True is returned
    * @return Value depending outcome dictated by {@param probability}
    */
   private boolean decision(Simulation state, double probability) {
     double random = state.random.nextDouble();
     return random <= probability;
+  }
+
+
+  /**
+   * Follow an agent denoted by {@param agentToFollow} and stay within the {@param minSeparation}
+   * distance
+   *
+   * @param sim           Simulation containing agents
+   * @param agentToFollow The agent who I will follow
+   * @param maxSeparation The maximum distance for the agent to stray away from the partner
+   */
+  private void coupledWalk(Simulation sim, Agent agentToFollow, double maxSeparation) {
+    if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(agentToFollow))
+        > maxSeparation) {
+      walkTowards(sim, getVectorToAgent(sim, agentToFollow));
+    } else {
+      randomWalk(sim);
+    }
   }
 
 

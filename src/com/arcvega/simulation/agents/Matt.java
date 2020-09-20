@@ -67,9 +67,9 @@ public class Matt extends Agent {
   private void coupledWalk(Simulation sim) {
     if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(coupledCasey))
         > SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
-      walkTowards(sim, getVectorToAgent(sim, coupledCasey));
+      walkTowards(sim, getVectorToAgent(sim, coupledCasey, SimConfig.FLIGHT_RESPONSE));
     } else {
-      randomWalk(sim);
+      randomWalk(sim, SimConfig.FLIGHT_RESPONSE);
     }
   }
 
@@ -140,6 +140,10 @@ public class Matt extends Agent {
 
   public void setCoupledCasey(Casey casey) {
     coupledCasey = casey;
+  }
+
+  public Casey getCoupledCasey() {
+    return coupledCasey;
   }
 
   public boolean isCoupled() {
