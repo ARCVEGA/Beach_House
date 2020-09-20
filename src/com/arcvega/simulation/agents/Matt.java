@@ -19,8 +19,9 @@ public class Matt extends Agent {
    */
   private Casey coupledCasey = null;
 
-  public Matt(SimState simState) {
-    caseyAffinity = simState.random.nextInt(100);
+  public Matt(Simulation sim) {
+    super(sim);
+    caseyAffinity = sim.random.nextInt(100);
   }
 
   @Override
@@ -43,18 +44,18 @@ public class Matt extends Agent {
   private void uncoupledWalk(Simulation sim) {
     // TODO: This could probably be a generic method in the Agent abstract class
     //  since its identical for Casey and Matt, just need to adjust getter for nearby agent
-    Bag potentialCaseys = getCaseysNearby(sim);
+    Bag potentialCaseys = getPotentialCaseys(sim);
 
     if (potentialCaseys.isEmpty()) {
       randomWalk(sim);
       return;
     }
 
-    Casey mostAttraciveCasey = getMostAttractiveCasey(potentialCaseys);
-    Double2D vecToCasey = getVectorToAgent(sim, mostAttraciveCasey);
+    Casey mostAttractiveCasey = getMostAttractiveCasey(potentialCaseys);
+    Double2D vecToCasey = getVectorToAgent(sim, mostAttractiveCasey);
 
     walkTowards(sim, vecToCasey);
-    evalAndCouple(sim, mostAttraciveCasey, vecToCasey);
+    evalAndCouple(sim, mostAttractiveCasey, vecToCasey);
   }
 
 
@@ -80,7 +81,7 @@ public class Matt extends Agent {
    * @param sim Simulation containing agents
    * @return Bag of potential Casey agents that Matt may want to couple with
    */
-  private Bag getCaseysNearby(Simulation sim) {
+  private Bag getPotentialCaseys(Simulation sim) {
     Bag potentialCaseys = new Bag();
     Bag neighbours = sim.space.getAllObjects();
 
@@ -89,6 +90,7 @@ public class Matt extends Agent {
         .filter(obj -> sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(obj))
             < SimConfig.MATT_THRESHOLD_DISTANCE)
         .filter(obj -> !((Casey) obj).isCoupled())
+        .filter(obj -> ((Casey) obj).getMattAffinity() > this.getStandard())
         .collect(Collectors.toList()));
 
     return potentialCaseys;
@@ -127,10 +129,12 @@ public class Matt extends Agent {
    * @param potentialPartner {@link Casey} which has potential to be partnered
    */
   private void evalAndCouple(Simulation sim, Casey potentialPartner, Double2D vectorToCasey) {
-    if (!isCoupled() && vectorToCasey.distance(sim.space.getObjectLocation(potentialPartner))
-        <= SimConfig.MATT_MINIMUM_COUPLING_DISTANCE) {
+    if (!isCoupled() &&
+        vectorToCasey.distance(sim.space.getObjectLocation(potentialPartner))
+            <= SimConfig.MATT_MINIMUM_COUPLING_DISTANCE &&
+        potentialPartner.isWillingToCouple(this)) {
       setCoupledCasey(potentialPartner);
-      this.coupledCasey.setCoupledMatt(this);
+      potentialPartner.setCoupledMatt(this);
     }
   }
 

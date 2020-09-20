@@ -19,8 +19,9 @@ public class Casey extends Agent {
   private final int mattAffinity;
 
 
-  public Casey(SimState simState) {
-    this.mattAffinity = simState.random.nextInt(100);
+  public Casey(Simulation sim) {
+    super(sim);
+    this.mattAffinity = sim.random.nextInt(100);
   }
 
   @Override
@@ -112,6 +113,14 @@ public class Casey extends Agent {
     return potentialMatts;
   }
 
+  public boolean isWillingToCouple(Matt matt) {
+    if (this.isCoupled()) {
+      return false;
+    }
+
+    return matt.getCaseyAffinity() > this.getStandard();
+  }
+
   /**
    * Evaluates if a Matt is ready to be coupled, if so then the couple is formed otherwise nothing
    * happens and Casey remains unpaired
@@ -120,7 +129,8 @@ public class Casey extends Agent {
    */
   private void evalAndCouple(Simulation sim, Matt potentialPartner, Double2D vectorToMatt) {
     if (!isCoupled() && vectorToMatt.distance(sim.space.getObjectLocation(potentialPartner))
-        <= SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
+        <= SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE &&
+        this.getMattAffinity() > potentialPartner.getStandard()) {
       setCoupledMatt(potentialPartner);
       coupledMatt.setCoupledCasey(this);
     }
