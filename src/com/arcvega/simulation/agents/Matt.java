@@ -87,7 +87,8 @@ public class Matt extends Agent {
     Stream<Object> stream = neighbours.stream();
     potentialCaseys.addAll(stream.filter(obj -> obj instanceof Casey)
         .filter(obj -> sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(obj))
-            < SimConfig.MATT_THRESHOLD_DISTANCE).filter(obj -> !((Casey) obj).isCoupled())
+            < SimConfig.MATT_THRESHOLD_DISTANCE)
+        .filter(obj -> !((Casey) obj).isCoupled())
         .collect(Collectors.toList()));
 
     return potentialCaseys;
