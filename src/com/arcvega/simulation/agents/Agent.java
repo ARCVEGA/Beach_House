@@ -138,27 +138,12 @@ public abstract class Agent implements Steppable {
 
 
   /**
-   * Method that check if an agent has been placed on the blacklist
-   *
-   * @param agent Agent to lookup
-   * @return True if blacklisted else False
-   */
-  boolean isBlacklisted(Agent agent) {
-    if (this.agentBlacklist.isEmpty()) {
-      return false;
-    }
-
-    return this.agentBlacklist.contains(agent);
-  }
-
-
-  /**
    * Method that sets agent onto the blacklist and keeps its size in check
    *
    * @param agent Agent which is added to blacklist
    */
   void setOnBlacklist(Agent agent) {
-    if (!isBlacklisted(agent)) {
+    if (!this.agentBlacklist.contains(agent)) {
       this.agentBlacklist.addLast(agent); // Append to list O(1)
       // TODO: Change temp blacklist size when appropriate
       if (this.agentBlacklist.size() > SimConfig.MATT_MAXIMUM_BLACKLIST_SIZE) {
