@@ -170,16 +170,15 @@ public abstract class Agent implements Steppable {
 
   /**
    * Method which should be overwritten to define if agent is willing to couple
+   *
    * @param potentialPartner Partner which is being asked if they want to couple
    * @return Response from partner
    */
-  public boolean isWillingToCouple(Agent potentialPartner)
-  {
+  public boolean isWillingToCouple(Agent potentialPartner) {
     return true;
   }
 
-  public LinkedList<Agent> getAgentBlacklist()
-  {
+  public LinkedList<Agent> getAgentBlacklist() {
     return this.agentBlacklist;
   }
 

@@ -132,7 +132,7 @@ public class Matt extends Agent {
     if (!isCoupled() && vectorToCasey.distance(sim.space.getObjectLocation(potentialPartner))
         <= SimConfig.MATT_MINIMUM_COUPLING_DISTANCE) {
       // Matt currently has no standards
-        setCoupledCasey(potentialPartner);
+      setCoupledCasey(potentialPartner);
     }
   }
 
@@ -143,6 +143,7 @@ public class Matt extends Agent {
 
   /**
    * Couples with a Casey or sets her on the blacklist if Matt is rejected
+   *
    * @param casey Casey which is being asked to couple
    */
   public void setCoupledCasey(Casey casey) {
