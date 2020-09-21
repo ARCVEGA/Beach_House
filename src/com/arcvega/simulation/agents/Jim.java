@@ -21,7 +21,7 @@ public class Jim extends Agent {
   public void step(SimState simState) {
     Simulation sim = (Simulation) simState;
 
-    if (!this.casey.isCoupled()) {
+    if (!this.casey.isCoupled() || this.hasAcceptedMatt) {
       keepNearCasey(sim);
     } else {
       chargeAtMatt(sim);
