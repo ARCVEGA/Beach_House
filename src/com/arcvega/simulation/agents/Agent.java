@@ -152,7 +152,7 @@ public abstract class Agent implements Steppable {
     if (!this.agentBlacklist.contains(agent)) {
       this.agentBlacklist.addLast(agent); // Append to list O(1)
       // TODO: Change temp blacklist size when appropriate
-      if (this.agentBlacklist.size() > SimConfig.MATT_MAXIMUM_BLACKLIST_SIZE) {
+      if (this.agentBlacklist.size() > SimConfig.AGENT_MAXIMUM_BLACKLIST_SIZE) {
         this.agentBlacklist.removeFirst(); // Pop from head O(1)
       }
     }
