@@ -67,8 +67,9 @@ public class Matt extends Agent {
   private void coupledWalk(Simulation sim) {
     if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(coupledAgent))
         > SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
-      if(!isPlayingCatch())
+      if (!isPlayingCatch()) {
         walkTowards(sim, getVectorToAgent(sim, coupledAgent, SimConfig.FLIGHT_RESPONSE));
+      }
     } else {
       randomWalk(sim, SimConfig.FLIGHT_RESPONSE);
     }
@@ -99,7 +100,7 @@ public class Matt extends Agent {
 
 
   /**
-   * Find most desirable Casey from {@param potentialCaseys}
+   * Find most desirable Casey from {@param potentialCaseys} which isn't blacklisted
    *
    * @param potentialCaseys Caseys within a distance of {@link SimConfig#MATT_THRESHOLD_DISTANCE}
    * @return Fittest Casey found in {@param potentialCaseys}

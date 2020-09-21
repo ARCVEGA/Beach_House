@@ -30,7 +30,8 @@ public class Jim extends Agent {
   }
 
   /**
-   * Defines the way Jim walks if Casey is not coupled with a Matt
+   * Jim walks randomly while he is within {@link SimConfig#JIM_THRESHOLD_DISTANCE} units of {@link
+   * Jim#casey}, if the distance is exceeded Jim moves back to adhere to this constraint
    *
    * @param sim Simulation containing the agents
    */
@@ -45,8 +46,8 @@ public class Jim extends Agent {
 
 
   /**
-   * Jim becomes agitated and moves towards Matt for a confrontation rather quickly and
-   * aggressively
+   * Jim becomes agitated and moves towards Matt for a confrontation rather quickly and aggressively
+   * so that he can confront him and play a round of catch
    *
    * @param sim Simulation containing Agents
    */
@@ -67,8 +68,9 @@ public class Jim extends Agent {
 
 
   /**
-   * Jim and {@param matt} stop walking and play a game of catch where Jim will evaluate {@param
-   * matt}
+   * Jim and Matt stop walking and play a game of catch where Jim will evaluate {@param agent} which
+   * Jim will use to evaluate Matt, aka {@param agent}. If Matt fails he will be uncoupled from
+   * Casey and will be blacklisted, otherwise he gets to stay coupled
    *
    * @param agent Individual who is paired with {@link Jim#casey}
    */
