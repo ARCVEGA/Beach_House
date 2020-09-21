@@ -13,6 +13,7 @@ public abstract class Agent implements Steppable {
   private LinkedList<Agent> agentBlacklist = new LinkedList<>(); // This will cause type erasure
   Agent coupledAgent = null;
   int standard;
+  boolean playingCatch = false;
 
   Agent(Simulation sim) {
     standard = sim.random.nextInt(100);
@@ -166,15 +167,16 @@ public abstract class Agent implements Steppable {
   }
 
 
-//  /**
-//   * Method which should be overwritten to define if agent is willing to couple
-//   *
-//   * @param potentialPartner Partner which is being asked if they want to couple
-//   * @return Response from partner
-//   */
-//  public boolean isWillingToCouple(Agent potentialPartner) {
-//    return true;
-//  }
+  /**
+   * Standard behaviour if agent is playing catch is that it does nothing
+   *
+   * @param agent Agent who Im playing catch with
+   */
+  void playCatch(Agent agent) {
+    if (agent.isPlayingCatch() && isPlayingCatch()) {
+      return;
+    }
+  }
 
   public LinkedList<Agent> getAgentBlacklist() {
     return this.agentBlacklist;
@@ -182,5 +184,13 @@ public abstract class Agent implements Steppable {
 
   public int getStandard() {
     return standard;
+  }
+
+  public void setPlayingCatch(boolean isPlaying) {
+    this.playingCatch = isPlaying;
+  }
+
+  public boolean isPlayingCatch() {
+    return playingCatch;
   }
 }

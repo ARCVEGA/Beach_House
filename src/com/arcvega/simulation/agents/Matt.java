@@ -18,7 +18,7 @@ public class Matt extends Agent {
 
   public Matt(Simulation sim) {
     super(sim);
-    caseyAffinity = sim.random.nextInt(8);
+    caseyAffinity = sim.random.nextInt(100);
   }
 
   @Override
@@ -67,7 +67,8 @@ public class Matt extends Agent {
   private void coupledWalk(Simulation sim) {
     if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(coupledAgent))
         > SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
-      walkTowards(sim, getVectorToAgent(sim, coupledAgent, SimConfig.FLIGHT_RESPONSE));
+      if(!isPlayingCatch())
+        walkTowards(sim, getVectorToAgent(sim, coupledAgent, SimConfig.FLIGHT_RESPONSE));
     } else {
       randomWalk(sim, SimConfig.FLIGHT_RESPONSE);
     }
@@ -88,6 +89,7 @@ public class Matt extends Agent {
     potentialCaseys.addAll(stream.filter(obj -> obj instanceof Casey)
         .filter(obj -> sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(obj))
             < SimConfig.MATT_THRESHOLD_DISTANCE)
+        .filter(obj -> !getAgentBlacklist().contains(obj))
         .filter(obj -> !((Casey) obj).isCoupled())
         .filter(obj -> ((Casey) obj).getMattAffinity() > this.getStandard())
         .collect(Collectors.toList()));
