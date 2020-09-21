@@ -124,9 +124,12 @@ public class Casey extends Agent {
    * Evaluates if a Matt is ready to be coupled, if so then the couple is formed otherwise nothing
    * happens and Casey remains unpaired
    *
+   * @param sim              Simulation containing all agents
    * @param potentialPartner {@link Matt} which has potential to be partnered
+   * @param vectorToMatt     Vector which moves Casey towards Matt
    * @apiNote This method is currently not used, since {@link Matt} does the coupling
    */
+  @Deprecated
   private void evalAndCouple(Simulation sim, Matt potentialPartner, Double2D vectorToMatt) {
     if (!isCoupled() && vectorToMatt.distance(sim.space.getObjectLocation(potentialPartner))
         <= SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE &&

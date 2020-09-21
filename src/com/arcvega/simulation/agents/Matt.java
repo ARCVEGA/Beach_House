@@ -128,7 +128,9 @@ public class Matt extends Agent {
    * Evaluates if a Casey is ready to be coupled, if so then the couple is formed otherwise nothing
    * happens and Casey remains unpaired
    *
+   * @param sim              Simulation containing all agents
    * @param potentialPartner {@link Casey} which has potential to be partnered
+   * @param vectorToCasey    Vector which Matt will use to follow Casey
    */
   private void evalAndCouple(Simulation sim, Casey potentialPartner, Double2D vectorToCasey) {
     if (!isCoupled() &&

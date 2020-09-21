@@ -92,7 +92,7 @@ public abstract class Agent implements Steppable {
   /**
    * Function that gets a vector in the direction of an agent with length {@param scalar}
    *
-   * @param sim    Sim object
+   * @param sim    Simulation object
    * @param agent  Agent to move towards
    * @param scalar Length of vector
    * @return A vector in the direction of {@param agent}
