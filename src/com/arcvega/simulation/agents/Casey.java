@@ -58,12 +58,15 @@ public class Casey extends Agent {
 
 
   /**
-   * Defines how Casey walks if she is coupled with a Matt at this time
+   * Defines how Casey walks if she is coupled with a Matt at this time. Casey and Matt will run
+   * until Jim catches up and asks Matt to play ball
    *
    * @param sim Simulation containing agents
    */
   private void coupledWalk(Simulation sim) {
-    randomWalk(sim, SimConfig.FLIGHT_RESPONSE);
+    if (!this.coupledAgent.isPlayingCatch()) {
+      randomWalk(sim, SimConfig.FLIGHT_RESPONSE);
+    }
   }
 
   /**
