@@ -2,6 +2,7 @@ package com.arcvega.simulation.agents;
 
 import com.arcvega.simulation.config.SimConfig;
 import com.arcvega.simulation.config.Simulation;
+import java.util.LinkedList;
 import sim.engine.Steppable;
 import sim.util.Double2D;
 import sim.util.MutableDouble2D;
@@ -9,9 +10,11 @@ import sim.util.MutableDouble2D;
 public abstract class Agent implements Steppable {
 
   private Double2D previousModifier = null;
+  private LinkedList<Agent> agentBlacklist = new LinkedList<>(); // This will cause type erasure
+  Agent coupledAgent = null;
   int standard;
 
-  Agent(Simulation sim){
+  Agent(Simulation sim) {
     standard = sim.random.nextInt(100);
   }
 
@@ -136,6 +139,45 @@ public abstract class Agent implements Steppable {
     } else {
       randomWalk(sim);
     }
+  }
+
+
+  /**
+   * Method that sets agent onto the blacklist and keeps its size in check
+   *
+   * @param agent Agent which is added to blacklist
+   */
+  void setOnBlacklist(Agent agent) {
+    if (!this.agentBlacklist.contains(agent)) {
+      this.agentBlacklist.addLast(agent); // Append to list O(1)
+      // TODO: Change temp blacklist size when appropriate
+      if (this.agentBlacklist.size() > SimConfig.MATT_MAXIMUM_BLACKLIST_SIZE) {
+        this.agentBlacklist.removeFirst(); // Pop from head O(1)
+      }
+    }
+  }
+
+  public void setCoupledAgent(Agent agent) {
+    this.coupledAgent = agent;
+  }
+
+  public boolean isCoupled() {
+    return coupledAgent != null;
+  }
+
+
+//  /**
+//   * Method which should be overwritten to define if agent is willing to couple
+//   *
+//   * @param potentialPartner Partner which is being asked if they want to couple
+//   * @return Response from partner
+//   */
+//  public boolean isWillingToCouple(Agent potentialPartner) {
+//    return true;
+//  }
+
+  public LinkedList<Agent> getAgentBlacklist() {
+    return this.agentBlacklist;
   }
 
   public int getStandard() {

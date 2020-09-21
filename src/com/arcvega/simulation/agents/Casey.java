@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 
 public class Casey extends Agent {
 
-  private Matt coupledMatt = null;
   /**
    * the affinity describes the how attractive this Casey is to the Matt agent from 0 to 100
    */
@@ -40,6 +39,7 @@ public class Casey extends Agent {
    * actively looking for a potential partner
    *
    * @param sim Simulation containing agents
+   * @apiNote This method is currently not used, since {@link Matt} does the coupling
    */
   private void uncoupledWalk(Simulation sim) {
     Bag potentialMatts = getMattsNearby(sim);
@@ -113,40 +113,45 @@ public class Casey extends Agent {
     return potentialMatts;
   }
 
-  public boolean isWillingToCouple(Matt matt) {
-    if (this.isCoupled()) {
-      return false;
-    }
-
-    return matt.getCaseyAffinity() > this.getStandard();
-  }
 
   /**
    * Evaluates if a Matt is ready to be coupled, if so then the couple is formed otherwise nothing
    * happens and Casey remains unpaired
    *
    * @param potentialPartner {@link Matt} which has potential to be partnered
+   * @apiNote This method is currently not used, since {@link Matt} does the coupling
    */
   private void evalAndCouple(Simulation sim, Matt potentialPartner, Double2D vectorToMatt) {
     if (!isCoupled() && vectorToMatt.distance(sim.space.getObjectLocation(potentialPartner))
         <= SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE &&
         this.getMattAffinity() > potentialPartner.getStandard()) {
-      setCoupledMatt(potentialPartner);
-      coupledMatt.setCoupledCasey(this);
+      setCoupledAgent(potentialPartner);
+      coupledAgent.setCoupledAgent(this);
     }
   }
 
+
+  /**
+   * @param potentialPartner Partner which is being asked if they want to couple
+   * @return Response that Casey gives to Matt
+   */
+  public boolean isWillingToCouple(Matt potentialPartner) {
+    if (this.isCoupled()) {
+      return false;
+    }
+
+    if (potentialPartner.getCaseyAffinity() > this.getStandard()) {
+      return true;
+    }
+
+    setOnBlacklist(potentialPartner);
+    return false;
+  }
+
   public Matt getCoupledMatt() {
-    return this.coupledMatt;
+    return (Matt) this.coupledAgent;
   }
 
-  public void setCoupledMatt(Matt matt) {
-    this.coupledMatt = matt;
-  }
-
-  public boolean isCoupled() {
-    return coupledMatt != null;
-  }
 
   public int getMattAffinity() {
     return mattAffinity;
