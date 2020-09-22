@@ -141,6 +141,7 @@ public class Matt extends Agent {
         potentialPartner.setCoupledAgent(this);
 
         // Add visible edge
+        // TODO: Info can be anything, maybe how much they want to stay together
         sim.getAgentNetwork().addEdge(this, potentialPartner, null);
       } else {
         setOnBlacklist(potentialPartner);
@@ -151,7 +152,6 @@ public class Matt extends Agent {
   public int getCaseyAffinity() {
     return caseyAffinity;
   }
-
 
   public Casey getCoupledCasey() {
     return (Casey) this.coupledAgent;

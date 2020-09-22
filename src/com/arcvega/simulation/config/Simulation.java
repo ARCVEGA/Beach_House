@@ -10,7 +10,8 @@ import sim.util.Double2D;
 
 public class Simulation extends SimState {
 
-  public Continuous2D space = new Continuous2D(SimConfig.SIM_DISCRETIZATION, SimConfig.SIM_WIDTH, SimConfig.SIM_HEIGHT);
+  public Continuous2D space = new Continuous2D(SimConfig.SIM_DISCRETIZATION, SimConfig.SIM_WIDTH,
+      SimConfig.SIM_HEIGHT);
   Network agentNetwork = new Network(false); // TODO: Undirected for now
 
   /**
@@ -66,6 +67,22 @@ public class Simulation extends SimState {
 
   public Network getAgentNetwork() {
     return agentNetwork;
+  }
+
+  public int getNumCaseys() {
+    return SimConfig.CASEY_AMOUNT;
+  }
+
+  public void setNumCaseys(int numCaseys) {
+    SimConfig.CASEY_AMOUNT = numCaseys;
+  }
+
+  public int getNumMatts() {
+    return SimConfig.MATT_AMOUNT;
+  }
+
+  public void setNumMatts(int numMatts) {
+    SimConfig.MATT_AMOUNT = numMatts;
   }
 
   /**

@@ -10,6 +10,7 @@ import sim.display.Controller;
 import sim.display.Display2D;
 import sim.display.GUIState;
 import sim.engine.SimState;
+import sim.portrayal.Inspector;
 import sim.portrayal.continuous.ContinuousPortrayal2D;
 import sim.portrayal.network.NetworkPortrayal2D;
 import sim.portrayal.network.SimpleEdgePortrayal2D;
@@ -35,6 +36,21 @@ public class SimulationWithUI extends GUIState {
 
   public SimulationWithUI() {
     super(new Simulation());
+  }
+
+  public Object getSimulationInspectedObject() {
+    return state;
+  }
+
+  /**
+   * Get simulation inspect in order to tweak settings on the fly
+   *
+   * @return Inspector
+   */
+  public Inspector getInspector() {
+    Inspector inspector = super.getInspector();
+    inspector.setVolatile(true);
+    return inspector;
   }
 
   /**
