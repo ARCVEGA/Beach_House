@@ -13,12 +13,12 @@ public abstract class Agent implements Steppable {
   private LinkedList<Agent> agentBlacklist = new LinkedList<>(); // This will cause type erasure
   final double affinity; /*The affinity describes how attractive this agent is as seen by others*/
   Agent coupledAgent = null;
-  int standard;
+  double standard;
   boolean playingCatch = false;
 
   Agent(Simulation sim) {
-    standard = sim.random.nextInt(100);
-    this.affinity = sim.random.nextInt(100);
+    standard = sim.random.nextGaussian();
+    this.affinity = sim.random.nextGaussian();
   }
 
   /**
@@ -189,7 +189,7 @@ public abstract class Agent implements Steppable {
     return this.agentBlacklist;
   }
 
-  public int getStandard() {
+  public double getStandard() {
     return standard;
   }
 
