@@ -139,6 +139,9 @@ public class Matt extends Agent {
       if (potentialPartner.isWillingToCouple(this)) {
         setCoupledAgent(potentialPartner);
         potentialPartner.setCoupledAgent(this);
+
+        // Add visible edge
+        sim.getAgentNetwork().addEdge(this, potentialPartner, null);
       } else {
         setOnBlacklist(potentialPartner);
       }

@@ -170,9 +170,10 @@ public abstract class Agent implements Steppable {
   /**
    * Standard behaviour if agent is playing catch is that it does nothing
    *
+   * @param sim   Simulation containing all agents
    * @param agent Agent who Im playing catch with
    */
-  void playCatch(Agent agent) {
+  void playCatch(Simulation sim, Agent agent) {
     if (agent.isPlayingCatch() && isPlayingCatch()) {
       return;
     }
