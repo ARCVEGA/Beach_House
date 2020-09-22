@@ -83,17 +83,12 @@ public class Jim extends Agent {
     setPlayingCatch(true);
 
     if (!isAcceptablePartner(matt)) {
-      // Make casey uncouple matt
       this.casey.setCoupledAgent(null);
-
-      // Make matt uncouple with casey
       matt.setCoupledAgent(null);
 
-      // Place them on each others blacklist
       this.casey.setOnBlacklist(matt);
       matt.setOnBlacklist(this.casey);
-
-      // Stop playing catch
+      
       matt.setPlayingCatch(false);
       this.setPlayingCatch(false);
     } else {
