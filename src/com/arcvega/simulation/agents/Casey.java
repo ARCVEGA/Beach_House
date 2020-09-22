@@ -85,8 +85,8 @@ public class Casey extends Agent {
 
       if (mostAttractiveMatt == null) {
         mostAttractiveMatt = matt;
-      } else if (matt.getCaseyAffinity() > mostAttractiveMatt
-          .getCaseyAffinity()) {
+      } else if (matt.getAffinity() > mostAttractiveMatt
+          .getAffinity()) {
         mostAttractiveMatt = matt;
       }
     }
@@ -133,7 +133,7 @@ public class Casey extends Agent {
   private void evalAndCouple(Simulation sim, Matt potentialPartner, Double2D vectorToMatt) {
     if (!isCoupled() && vectorToMatt.distance(sim.space.getObjectLocation(potentialPartner))
         <= SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE &&
-        this.getMattAffinity() > potentialPartner.getStandard()) {
+        this.getAffinity() > potentialPartner.getStandard()) {
       setCoupledAgent(potentialPartner);
       coupledAgent.setCoupledAgent(this);
     }
@@ -149,7 +149,7 @@ public class Casey extends Agent {
       return false;
     }
 
-    if (potentialPartner.getCaseyAffinity() > this.getStandard()) {
+    if (potentialPartner.getAffinity() > this.getStandard()) {
       return true;
     }
 
@@ -162,7 +162,8 @@ public class Casey extends Agent {
   }
 
 
-  public int getMattAffinity() {
+  @Override
+  public int getAffinity() {
     return mattAffinity;
   }
 }

@@ -112,7 +112,7 @@ public class Jim extends Agent {
    */
   private boolean isAcceptablePartner(Matt matt) {
     // TODO: This method is simple for now, but will grow in complexity once genetics are added
-    return matt.getCaseyAffinity() >= this.standard;
+    return matt.getAffinity() >= this.standard;
   }
 
 }

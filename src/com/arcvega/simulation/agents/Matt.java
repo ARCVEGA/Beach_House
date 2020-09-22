@@ -92,7 +92,7 @@ public class Matt extends Agent {
             < SimConfig.MATT_THRESHOLD_DISTANCE)
         .filter(obj -> !getAgentBlacklist().contains(obj))
         .filter(obj -> !((Casey) obj).isCoupled())
-        .filter(obj -> ((Casey) obj).getMattAffinity() > this.getStandard())
+        .filter(obj -> ((Casey) obj).getAffinity() > this.getStandard())
         .collect(Collectors.toList()));
 
     return potentialCaseys;
@@ -113,7 +113,7 @@ public class Matt extends Agent {
 
       if (mostAttractiveCasey == null) {
         mostAttractiveCasey = casey;
-      } else if (casey.getMattAffinity() > mostAttractiveCasey.getMattAffinity()) {
+      } else if (casey.getAffinity() > mostAttractiveCasey.getAffinity()) {
         mostAttractiveCasey = casey;
       }
     }
@@ -149,7 +149,8 @@ public class Matt extends Agent {
     }
   }
 
-  public int getCaseyAffinity() {
+  @Override
+  public int getAffinity() {
     return caseyAffinity;
   }
 

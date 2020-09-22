@@ -115,56 +115,20 @@ public class Simulation extends SimState {
   }
 
 
-  // TODO: This can probably be rewritten to be a lot nicer than this
   public double[] getMattAffinityDistribution() {
-    Bag caseys = new Bag();
-    Stream<Agent> stream = agentNetwork.getAllNodes().stream();
-    caseys.addAll(stream.filter(obj -> obj instanceof Casey).collect(Collectors.toList()));
-    double[] distrib = new double[caseys.numObjs];
-
-    for (int i = 0; i < caseys.numObjs; i++) {
-      distrib[i] = ((Casey) caseys.get(i)).getMattAffinity();
-    }
-
-    return distrib;
+    return InspectorHelper.getAffinityDistribution(this, Casey.class);
   }
 
 
   public double[] getCaseyAffinityDistribution() {
-    Bag matts = new Bag();
-    Stream<Agent> stream = agentNetwork.getAllNodes().stream();
-    matts.addAll(stream.filter(obj -> obj instanceof Matt).collect(Collectors.toList()));
-    double[] distrib = new double[matts.numObjs];
-
-    for (int i = 0; i < matts.numObjs; i++) {
-      distrib[i] = ((Matt) matts.get(i)).getCaseyAffinity();
-    }
-
-    return distrib;
+    return InspectorHelper.getAffinityDistribution(this, Matt.class);
   }
 
   public boolean[] getCoupledCaseyDistribution() {
-    Bag caseys = new Bag();
-    Stream<Object> stream = agentNetwork.getAllNodes().stream();
-    caseys.addAll(stream.filter(obj -> obj instanceof Casey).collect(Collectors.toList()));
-    boolean[] distrib = new boolean[caseys.numObjs];
-
-    for (int i = 0; i < caseys.numObjs; i++) {
-      distrib[i] = ((Casey) (caseys.get(i))).isCoupled();
-    }
-    return distrib;
+    return InspectorHelper.getCoupledDistribution(this, Casey.class);
   }
 
   public boolean[] getCoupledMattDistribution() {
-    Bag matts = new Bag();
-    Stream<Agent> stream = agentNetwork.getAllNodes().stream();
-    matts.addAll(stream.filter(obj -> obj instanceof Matt).collect(Collectors.toList()));
-    boolean[] distrib = new boolean[matts.numObjs];
-
-    for (int i = 0; i < matts.numObjs; i++) {
-      distrib[i] = ((Matt) matts.get(i)).isCoupled();
-    }
-
-    return distrib;
+        return InspectorHelper.getCoupledDistribution(this, Matt.class);
   }
 }

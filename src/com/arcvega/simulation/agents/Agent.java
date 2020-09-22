@@ -179,6 +179,10 @@ public abstract class Agent implements Steppable {
     }
   }
 
+  public int getAffinity() {
+    return 0;
+  }
+
   public LinkedList<Agent> getAgentBlacklist() {
     return this.agentBlacklist;
   }
