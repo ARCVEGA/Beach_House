@@ -1,15 +1,12 @@
 package com.arcvega.simulation.config;
 
-import com.arcvega.simulation.agents.Agent;
+
 import com.arcvega.simulation.agents.Casey;
 import com.arcvega.simulation.agents.Jim;
 import com.arcvega.simulation.agents.Matt;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import sim.engine.SimState;
 import sim.field.continuous.Continuous2D;
 import sim.field.network.Network;
-import sim.util.Bag;
 import sim.util.Double2D;
 
 public class Simulation extends SimState {
