@@ -13,6 +13,7 @@ public abstract class Agent implements Steppable {
   private LinkedList<Agent> agentBlacklist = new LinkedList<>(); // This will cause type erasure
   Agent coupledAgent = null;
   int standard;
+  boolean playingCatch = false;
 
   Agent(Simulation sim) {
     standard = sim.random.nextInt(100);
@@ -91,7 +92,7 @@ public abstract class Agent implements Steppable {
   /**
    * Function that gets a vector in the direction of an agent with length {@param scalar}
    *
-   * @param sim    Sim object
+   * @param sim    Simulation object
    * @param agent  Agent to move towards
    * @param scalar Length of vector
    * @return A vector in the direction of {@param agent}
@@ -151,7 +152,7 @@ public abstract class Agent implements Steppable {
     if (!this.agentBlacklist.contains(agent)) {
       this.agentBlacklist.addLast(agent); // Append to list O(1)
       // TODO: Change temp blacklist size when appropriate
-      if (this.agentBlacklist.size() > SimConfig.MATT_MAXIMUM_BLACKLIST_SIZE) {
+      if (this.agentBlacklist.size() > SimConfig.AGENT_MAXIMUM_BLACKLIST_SIZE) {
         this.agentBlacklist.removeFirst(); // Pop from head O(1)
       }
     }
@@ -166,15 +167,16 @@ public abstract class Agent implements Steppable {
   }
 
 
-//  /**
-//   * Method which should be overwritten to define if agent is willing to couple
-//   *
-//   * @param potentialPartner Partner which is being asked if they want to couple
-//   * @return Response from partner
-//   */
-//  public boolean isWillingToCouple(Agent potentialPartner) {
-//    return true;
-//  }
+  /**
+   * Standard behaviour if agent is playing catch is that it does nothing
+   *
+   * @param agent Agent who Im playing catch with
+   */
+  void playCatch(Agent agent) {
+    if (agent.isPlayingCatch() && isPlayingCatch()) {
+      return;
+    }
+  }
 
   public LinkedList<Agent> getAgentBlacklist() {
     return this.agentBlacklist;
@@ -182,5 +184,13 @@ public abstract class Agent implements Steppable {
 
   public int getStandard() {
     return standard;
+  }
+
+  public void setPlayingCatch(boolean isPlaying) {
+    this.playingCatch = isPlaying;
+  }
+
+  public boolean isPlayingCatch() {
+    return playingCatch;
   }
 }

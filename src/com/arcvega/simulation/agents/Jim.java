@@ -10,6 +10,7 @@ import sim.util.MutableDouble2D;
 public class Jim extends Agent {
 
   private final Casey casey;
+  private boolean hasAcceptedMatt = false;
 
   public Jim(Simulation sim, Casey casey) {
     super(sim);
@@ -20,7 +21,7 @@ public class Jim extends Agent {
   public void step(SimState simState) {
     Simulation sim = (Simulation) simState;
 
-    if (!this.casey.isCoupled()) {
+    if (!this.casey.isCoupled() || this.hasAcceptedMatt) {
       keepNearCasey(sim);
     } else {
       chargeAtMatt(sim);
@@ -29,7 +30,8 @@ public class Jim extends Agent {
   }
 
   /**
-   * Defines the way Jim walks if Casey is not coupled with a Matt
+   * Jim walks randomly while he is within {@link SimConfig#JIM_THRESHOLD_DISTANCE} units of {@link
+   * Jim#casey}, if the distance is exceeded Jim moves back to adhere to this constraint
    *
    * @param sim Simulation containing the agents
    */
@@ -44,8 +46,8 @@ public class Jim extends Agent {
 
 
   /**
-   * Jim becomes agitated and moves towards Matt for a confrontation rather quickly and
-   * aggressively
+   * Jim becomes agitated and moves towards Matt for a confrontation rather quickly and aggressively
+   * so that he can confront him and play a round of catch
    *
    * @param sim Simulation containing Agents
    */
@@ -53,13 +55,61 @@ public class Jim extends Agent {
     if (sim.space.getObjectLocation(this)
         .distance(sim.space.getObjectLocation(this.casey.getCoupledMatt()))
         < SimConfig.JIM_MAX_DISTANCE_FROM_MATT) {
-      randomWalk(sim);
+      if (!hasAcceptedMatt && this.casey.isCoupled()) {
+        playCatch(this.casey.getCoupledMatt());
+      }
     } else {
       MutableDouble2D aggressiveVector = new MutableDouble2D(
           getVectorToAgent(sim, casey.getCoupledMatt(), SimConfig.JIM_CHARGE_MATT_SCALAR));
       /*Perform walk to Matt using aggressive vector*/
       walkTowards(sim, new Double2D(aggressiveVector));
     }
+  }
+
+
+  /**
+   * Jim and Matt stop walking and play a game of catch where Jim will evaluate {@param agent} which
+   * Jim will use to evaluate Matt, aka {@param agent}. If Matt fails he will be uncoupled from
+   * Casey and will be blacklisted, otherwise he gets to stay coupled
+   *
+   * @param agent Individual who is paired with {@link Jim#casey}
+   */
+  @Override
+  void playCatch(Agent agent) {
+    Matt matt = (Matt) agent;
+
+    // Start a game of catch
+    matt.playCatch(this);
+    setPlayingCatch(true);
+
+    if (!isAcceptablePartner(matt)) {
+      this.casey.setCoupledAgent(null);
+      matt.setCoupledAgent(null);
+
+      this.casey.setOnBlacklist(matt);
+      matt.setOnBlacklist(this.casey);
+      
+      matt.setPlayingCatch(false);
+      this.setPlayingCatch(false);
+    } else {
+      this.hasAcceptedMatt = true;
+
+      matt.setPlayingCatch(false);
+      this.setPlayingCatch(false);
+    }
+
+  }
+
+
+  /**
+   * Evaluate {@param matt} and decides if he accepts or rejects the instance
+   *
+   * @param matt Instance coupled with {@link Jim#casey}
+   * @return True if {@param matt} is accepted, else false
+   */
+  private boolean isAcceptablePartner(Matt matt) {
+    // TODO: This method is simple for now, but will grow in complexity once genetics are added
+    return matt.getCaseyAffinity() >= this.standard;
   }
 
 }

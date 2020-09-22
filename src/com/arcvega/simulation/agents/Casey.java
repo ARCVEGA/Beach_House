@@ -41,6 +41,7 @@ public class Casey extends Agent {
    * @param sim Simulation containing agents
    * @apiNote This method is currently not used, since {@link Matt} does the coupling
    */
+  @Deprecated
   private void uncoupledWalk(Simulation sim) {
     Bag potentialMatts = getMattsNearby(sim);
 
@@ -58,12 +59,15 @@ public class Casey extends Agent {
 
 
   /**
-   * Defines how Casey walks if she is coupled with a Matt at this time
+   * When coupled, Casey and Matt will run until Jim catches up and asks Matt to play ball, if they
+   * remain coupled they will continue random walking
    *
    * @param sim Simulation containing agents
    */
   private void coupledWalk(Simulation sim) {
-    randomWalk(sim, SimConfig.FLIGHT_RESPONSE);
+    if (!this.coupledAgent.isPlayingCatch()) {
+      randomWalk(sim, SimConfig.FLIGHT_RESPONSE);
+    }
   }
 
   /**
@@ -93,11 +97,12 @@ public class Casey extends Agent {
 
   /**
    * Filters all Matt agents which are uncoupled and within predefined threshold distance of {@link
-   * SimConfig#CASEY_MINIMUM_COUPLING_DISTANCE}
+   * SimConfig#CASEY_MINIMUM_COUPLING_DISTANCE}, only get Agents which are not blacklisted
    *
    * @param sim Simulation where entities exist
    * @return Bag of filtered Matt agens
    */
+  @Deprecated
   private Bag getMattsNearby(Simulation sim) {
     Bag potentialMatts = new Bag();
     Bag neighbours = sim.space.getAllObjects();
@@ -107,6 +112,7 @@ public class Casey extends Agent {
         .filter(obj -> obj instanceof Matt)
         .filter(obj -> sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(obj))
             < SimConfig.CASEY_THRESHOLD_DISTANCE)
+        .filter(obj -> !getAgentBlacklist().contains(obj))
         .filter(obj -> !((Matt) obj).isCoupled())
         .collect(Collectors.toList()));
 
@@ -118,9 +124,12 @@ public class Casey extends Agent {
    * Evaluates if a Matt is ready to be coupled, if so then the couple is formed otherwise nothing
    * happens and Casey remains unpaired
    *
+   * @param sim              Simulation containing all agents
    * @param potentialPartner {@link Matt} which has potential to be partnered
+   * @param vectorToMatt     Vector which moves Casey towards Matt
    * @apiNote This method is currently not used, since {@link Matt} does the coupling
    */
+  @Deprecated
   private void evalAndCouple(Simulation sim, Matt potentialPartner, Double2D vectorToMatt) {
     if (!isCoupled() && vectorToMatt.distance(sim.space.getObjectLocation(potentialPartner))
         <= SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE &&

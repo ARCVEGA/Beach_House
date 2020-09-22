@@ -18,7 +18,7 @@ public class Matt extends Agent {
 
   public Matt(Simulation sim) {
     super(sim);
-    caseyAffinity = sim.random.nextInt(8);
+    caseyAffinity = sim.random.nextInt(100);
   }
 
   @Override
@@ -67,7 +67,9 @@ public class Matt extends Agent {
   private void coupledWalk(Simulation sim) {
     if (sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(coupledAgent))
         > SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE) {
-      walkTowards(sim, getVectorToAgent(sim, coupledAgent, SimConfig.FLIGHT_RESPONSE));
+      if (!isPlayingCatch()) {
+        walkTowards(sim, getVectorToAgent(sim, coupledAgent, SimConfig.FLIGHT_RESPONSE));
+      }
     } else {
       randomWalk(sim, SimConfig.FLIGHT_RESPONSE);
     }
@@ -88,6 +90,7 @@ public class Matt extends Agent {
     potentialCaseys.addAll(stream.filter(obj -> obj instanceof Casey)
         .filter(obj -> sim.space.getObjectLocation(this).distance(sim.space.getObjectLocation(obj))
             < SimConfig.MATT_THRESHOLD_DISTANCE)
+        .filter(obj -> !getAgentBlacklist().contains(obj))
         .filter(obj -> !((Casey) obj).isCoupled())
         .filter(obj -> ((Casey) obj).getMattAffinity() > this.getStandard())
         .collect(Collectors.toList()));
@@ -97,7 +100,7 @@ public class Matt extends Agent {
 
 
   /**
-   * Find most desirable Casey from {@param potentialCaseys}
+   * Find most desirable Casey from {@param potentialCaseys} which isn't blacklisted
    *
    * @param potentialCaseys Caseys within a distance of {@link SimConfig#MATT_THRESHOLD_DISTANCE}
    * @return Fittest Casey found in {@param potentialCaseys}
@@ -125,7 +128,9 @@ public class Matt extends Agent {
    * Evaluates if a Casey is ready to be coupled, if so then the couple is formed otherwise nothing
    * happens and Casey remains unpaired
    *
+   * @param sim              Simulation containing all agents
    * @param potentialPartner {@link Casey} which has potential to be partnered
+   * @param vectorToCasey    Vector which Matt will use to follow Casey
    */
   private void evalAndCouple(Simulation sim, Casey potentialPartner, Double2D vectorToCasey) {
     if (!isCoupled() &&
