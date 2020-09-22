@@ -43,7 +43,8 @@ public class SimulationWithUI extends GUIState {
   }
 
   /**
-   * Get simulation inspect in order to tweak settings on the fly
+   * Get simulation inspect in order to tweak settings on the fly. The inspector is volatile since
+   * it operates during the sim when we get histograms or other data
    *
    * @return Inspector for the entire model
    */

@@ -142,4 +142,29 @@ public class Simulation extends SimState {
 
     return distrib;
   }
+
+  public boolean[] getCoupledCaseyDistribution() {
+    Bag caseys = new Bag();
+    Stream<Object> stream = agentNetwork.getAllNodes().stream();
+    caseys.addAll(stream.filter(obj -> obj instanceof Casey).collect(Collectors.toList()));
+    boolean[] distrib = new boolean[caseys.numObjs];
+
+    for (int i = 0; i < caseys.numObjs; i++) {
+      distrib[i] = ((Casey) (caseys.get(i))).isCoupled();
+    }
+    return distrib;
+  }
+
+  public boolean[] getCoupledMattDistribution() {
+    Bag matts = new Bag();
+    Stream<Agent> stream = agentNetwork.getAllNodes().stream();
+    matts.addAll(stream.filter(obj -> obj instanceof Matt).collect(Collectors.toList()));
+    boolean[] distrib = new boolean[matts.numObjs];
+
+    for (int i = 0; i < matts.numObjs; i++) {
+      distrib[i] = ((Matt) matts.get(i)).isCoupled();
+    }
+
+    return distrib;
+  }
 }
