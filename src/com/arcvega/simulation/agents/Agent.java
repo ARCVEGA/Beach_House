@@ -11,12 +11,14 @@ public abstract class Agent implements Steppable {
 
   private Double2D previousModifier = null;
   private LinkedList<Agent> agentBlacklist = new LinkedList<>(); // This will cause type erasure
+  final double affinity; /*The affinity describes how attractive this agent is as seen by others*/
   Agent coupledAgent = null;
   int standard;
   boolean playingCatch = false;
 
   Agent(Simulation sim) {
     standard = sim.random.nextInt(100);
+    this.affinity = sim.random.nextInt(100);
   }
 
   /**
@@ -170,12 +172,17 @@ public abstract class Agent implements Steppable {
   /**
    * Standard behaviour if agent is playing catch is that it does nothing
    *
+   * @param sim   Simulation containing all agents
    * @param agent Agent who Im playing catch with
    */
-  void playCatch(Agent agent) {
+  void playCatch(Simulation sim, Agent agent) {
     if (agent.isPlayingCatch() && isPlayingCatch()) {
       return;
     }
+  }
+
+  public double getAffinity() {
+    return affinity;
   }
 
   public LinkedList<Agent> getAgentBlacklist() {

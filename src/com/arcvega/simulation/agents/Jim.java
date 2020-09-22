@@ -56,7 +56,7 @@ public class Jim extends Agent {
         .distance(sim.space.getObjectLocation(this.casey.getCoupledMatt()))
         < SimConfig.JIM_MAX_DISTANCE_FROM_MATT) {
       if (!hasAcceptedMatt && this.casey.isCoupled()) {
-        playCatch(this.casey.getCoupledMatt());
+        playCatch(sim, this.casey.getCoupledMatt());
       }
     } else {
       MutableDouble2D aggressiveVector = new MutableDouble2D(
@@ -72,14 +72,15 @@ public class Jim extends Agent {
    * Jim will use to evaluate Matt, aka {@param agent}. If Matt fails he will be uncoupled from
    * Casey and will be blacklisted, otherwise he gets to stay coupled
    *
+   * @param sim   Simulation containing all agents
    * @param agent Individual who is paired with {@link Jim#casey}
    */
   @Override
-  void playCatch(Agent agent) {
+  void playCatch(Simulation sim, Agent agent) {
     Matt matt = (Matt) agent;
 
     // Start a game of catch
-    matt.playCatch(this);
+    matt.playCatch(sim, this);
     setPlayingCatch(true);
 
     if (!isAcceptablePartner(matt)) {
@@ -88,7 +89,9 @@ public class Jim extends Agent {
 
       this.casey.setOnBlacklist(matt);
       matt.setOnBlacklist(this.casey);
-      
+
+      sim.getAgentNetwork().removeEdge(sim.getAgentNetwork().getEdge(this.casey, matt));
+
       matt.setPlayingCatch(false);
       this.setPlayingCatch(false);
     } else {
@@ -109,7 +112,7 @@ public class Jim extends Agent {
    */
   private boolean isAcceptablePartner(Matt matt) {
     // TODO: This method is simple for now, but will grow in complexity once genetics are added
-    return matt.getCaseyAffinity() >= this.standard;
+    return matt.getAffinity() >= this.standard;
   }
 
 }

@@ -10,7 +10,11 @@ import sim.display.Controller;
 import sim.display.Display2D;
 import sim.display.GUIState;
 import sim.engine.SimState;
+import sim.portrayal.Inspector;
 import sim.portrayal.continuous.ContinuousPortrayal2D;
+import sim.portrayal.network.NetworkPortrayal2D;
+import sim.portrayal.network.SimpleEdgePortrayal2D;
+import sim.portrayal.network.SpatialNetwork2D;
 import sim.portrayal.simple.OvalPortrayal2D;
 
 public class SimulationWithUI extends GUIState {
@@ -24,6 +28,7 @@ public class SimulationWithUI extends GUIState {
    */
   private JFrame displayFrame;
   private ContinuousPortrayal2D spacePortrayal = new ContinuousPortrayal2D();
+  private NetworkPortrayal2D agentNetworkPortrayal = new NetworkPortrayal2D();
 
   public SimulationWithUI(SimState state) {
     super(state);
@@ -31,6 +36,22 @@ public class SimulationWithUI extends GUIState {
 
   public SimulationWithUI() {
     super(new Simulation());
+  }
+
+  public Object getSimulationInspectedObject() {
+    return state;
+  }
+
+  /**
+   * Get simulation inspect in order to tweak settings on the fly. The inspector is volatile since
+   * it operates during the sim when we get histograms or other data
+   *
+   * @return Inspector for the entire model
+   */
+  public Inspector getInspector() {
+    Inspector inspector = super.getInspector();
+    inspector.setVolatile(true);
+    return inspector;
   }
 
   /**
@@ -54,6 +75,7 @@ public class SimulationWithUI extends GUIState {
     displayFrame.setVisible(true);
 
     display.attach(spacePortrayal, "2DSpace");
+    display.attach(agentNetworkPortrayal, "2DNetworkPortrayal");
   }
 
   /**
@@ -67,6 +89,10 @@ public class SimulationWithUI extends GUIState {
     spacePortrayal.setPortrayalForClass(Casey.class, new OvalPortrayal2D(Color.red, 2));
     spacePortrayal.setPortrayalForClass(Matt.class, new OvalPortrayal2D(Color.black, 2));
     spacePortrayal.setPortrayalForClass(Jim.class, new OvalPortrayal2D(Color.blue, 2));
+
+    agentNetworkPortrayal.setField(
+        new SpatialNetwork2D(((Simulation) state).space, ((Simulation) state).agentNetwork));
+    agentNetworkPortrayal.setPortrayalForAll(new SimpleEdgePortrayal2D());
 
     // Quick reset of the frame to make sure there is a clean board
     display.reset();

@@ -10,15 +10,9 @@ import sim.util.Double2D;
 
 public class Matt extends Agent {
 
-  /**
-   * Casey affinity is the quantified amount that a Casey likes a particular Matt
-   */
-  private final int caseyAffinity;
-
 
   public Matt(Simulation sim) {
     super(sim);
-    caseyAffinity = sim.random.nextInt(100);
   }
 
   @Override
@@ -92,7 +86,7 @@ public class Matt extends Agent {
             < SimConfig.MATT_THRESHOLD_DISTANCE)
         .filter(obj -> !getAgentBlacklist().contains(obj))
         .filter(obj -> !((Casey) obj).isCoupled())
-        .filter(obj -> ((Casey) obj).getMattAffinity() > this.getStandard())
+        .filter(obj -> ((Casey) obj).getAffinity() > this.getStandard())
         .collect(Collectors.toList()));
 
     return potentialCaseys;
@@ -113,7 +107,7 @@ public class Matt extends Agent {
 
       if (mostAttractiveCasey == null) {
         mostAttractiveCasey = casey;
-      } else if (casey.getMattAffinity() > mostAttractiveCasey.getMattAffinity()) {
+      } else if (casey.getAffinity() > mostAttractiveCasey.getAffinity()) {
         mostAttractiveCasey = casey;
       }
     }
@@ -139,16 +133,15 @@ public class Matt extends Agent {
       if (potentialPartner.isWillingToCouple(this)) {
         setCoupledAgent(potentialPartner);
         potentialPartner.setCoupledAgent(this);
+
+        // Add visible edge
+        // TODO: Info can be anything, maybe how much they want to stay together
+        sim.getAgentNetwork().addEdge(this, potentialPartner, null);
       } else {
         setOnBlacklist(potentialPartner);
       }
     }
   }
-
-  public int getCaseyAffinity() {
-    return caseyAffinity;
-  }
-
 
   public Casey getCoupledCasey() {
     return (Casey) this.coupledAgent;
