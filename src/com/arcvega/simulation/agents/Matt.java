@@ -10,15 +10,9 @@ import sim.util.Double2D;
 
 public class Matt extends Agent {
 
-  /**
-   * Casey affinity is the quantified amount that a Casey likes a particular Matt
-   */
-  private final int caseyAffinity;
-
 
   public Matt(Simulation sim) {
     super(sim);
-    caseyAffinity = sim.random.nextInt(100);
   }
 
   @Override
@@ -147,11 +141,6 @@ public class Matt extends Agent {
         setOnBlacklist(potentialPartner);
       }
     }
-  }
-
-  @Override
-  public int getAffinity() {
-    return caseyAffinity;
   }
 
   public Casey getCoupledCasey() {

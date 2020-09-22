@@ -12,15 +12,9 @@ import java.util.stream.Stream;
 
 public class Casey extends Agent {
 
-  /**
-   * the affinity describes the how attractive this Casey is to the Matt agent from 0 to 100
-   */
-  private final int mattAffinity;
-
 
   public Casey(Simulation sim) {
     super(sim);
-    this.mattAffinity = sim.random.nextInt(100);
   }
 
   @Override
@@ -161,9 +155,4 @@ public class Casey extends Agent {
     return (Matt) this.coupledAgent;
   }
 
-
-  @Override
-  public int getAffinity() {
-    return mattAffinity;
-  }
 }

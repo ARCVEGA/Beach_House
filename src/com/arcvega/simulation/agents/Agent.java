@@ -11,12 +11,14 @@ public abstract class Agent implements Steppable {
 
   private Double2D previousModifier = null;
   private LinkedList<Agent> agentBlacklist = new LinkedList<>(); // This will cause type erasure
+  final double affinity; /*The affinity describes how attractive this agent is as seen by others*/
   Agent coupledAgent = null;
   int standard;
   boolean playingCatch = false;
 
   Agent(Simulation sim) {
     standard = sim.random.nextInt(100);
+    this.affinity = sim.random.nextInt(100);
   }
 
   /**
@@ -179,8 +181,8 @@ public abstract class Agent implements Steppable {
     }
   }
 
-  public int getAffinity() {
-    return 0;
+  public double getAffinity() {
+    return affinity;
   }
 
   public LinkedList<Agent> getAgentBlacklist() {
