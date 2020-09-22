@@ -1,11 +1,15 @@
 package com.arcvega.simulation.config;
 
+import com.arcvega.simulation.agents.Agent;
 import com.arcvega.simulation.agents.Casey;
 import com.arcvega.simulation.agents.Jim;
 import com.arcvega.simulation.agents.Matt;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import sim.engine.SimState;
 import sim.field.continuous.Continuous2D;
 import sim.field.network.Network;
+import sim.util.Bag;
 import sim.util.Double2D;
 
 public class Simulation extends SimState {
@@ -69,22 +73,6 @@ public class Simulation extends SimState {
     return agentNetwork;
   }
 
-  public int getNumCaseys() {
-    return SimConfig.CASEY_AMOUNT;
-  }
-
-  public void setNumCaseys(int numCaseys) {
-    SimConfig.CASEY_AMOUNT = numCaseys;
-  }
-
-  public int getNumMatts() {
-    return SimConfig.MATT_AMOUNT;
-  }
-
-  public void setNumMatts(int numMatts) {
-    SimConfig.MATT_AMOUNT = numMatts;
-  }
-
   /**
    * Function called either at the end of a simulation. Used for clean-up.
    */
@@ -105,5 +93,53 @@ public class Simulation extends SimState {
         you forget to turn your user threads into daemon threads. Daemon threads do not prevent
         the JVM from shutting down, whilst user threads do. */
     System.exit(0);
+  }
+
+  /* The following methods are for the model inspector, allowing us to tune simulation parameters
+    without needing to restart the entire simulation */
+
+  public int getNumCaseys() {
+    return SimConfig.CASEY_AMOUNT;
+  }
+
+  public void setNumCaseys(int numCaseys) {
+    SimConfig.CASEY_AMOUNT = numCaseys;
+  }
+
+  public int getNumMatts() {
+    return SimConfig.MATT_AMOUNT;
+  }
+
+  public void setNumMatts(int numMatts) {
+    SimConfig.MATT_AMOUNT = numMatts;
+  }
+
+
+  // TODO: This can probably be rewritten to be a lot nicer than this
+  public double[] getMattAffinityDistribution() {
+    Bag caseys = new Bag();
+    Stream<Agent> stream = agentNetwork.getAllNodes().stream();
+    caseys.addAll(stream.filter(obj -> obj instanceof Casey).collect(Collectors.toList()));
+    double[] distrib = new double[caseys.numObjs];
+
+    for (int i = 0; i < caseys.numObjs; i++) {
+      distrib[i] = ((Casey) caseys.get(i)).getMattAffinity();
+    }
+
+    return distrib;
+  }
+
+
+  public double[] getCaseyAffinityDistribution() {
+    Bag matts = new Bag();
+    Stream<Agent> stream = agentNetwork.getAllNodes().stream();
+    matts.addAll(stream.filter(obj -> obj instanceof Matt).collect(Collectors.toList()));
+    double[] distrib = new double[matts.numObjs];
+
+    for (int i = 0; i < matts.numObjs; i++) {
+      distrib[i] = ((Matt) matts.get(i)).getCaseyAffinity();
+    }
+
+    return distrib;
   }
 }

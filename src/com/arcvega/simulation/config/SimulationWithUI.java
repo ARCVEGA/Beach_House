@@ -45,7 +45,7 @@ public class SimulationWithUI extends GUIState {
   /**
    * Get simulation inspect in order to tweak settings on the fly
    *
-   * @return Inspector
+   * @return Inspector for the entire model
    */
   public Inspector getInspector() {
     Inspector inspector = super.getInspector();
