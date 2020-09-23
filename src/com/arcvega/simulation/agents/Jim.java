@@ -53,14 +53,14 @@ public class Jim extends Agent {
    */
   private void chargeAtMatt(Simulation sim) {
     if (sim.space.getObjectLocation(this)
-        .distance(sim.space.getObjectLocation(this.casey.getCoupledMatt()))
+        .distance(sim.space.getObjectLocation(this.casey.getCoupledAgent()))
         < SimConfig.JIM_MAX_DISTANCE_FROM_MATT) {
       if (!hasAcceptedMatt && this.casey.isCoupled()) {
-        playCatch(sim, this.casey.getCoupledMatt());
+        playCatch(sim, this.casey.getCoupledAgent());
       }
     } else {
       MutableDouble2D aggressiveVector = new MutableDouble2D(
-          getVectorToAgent(sim, casey.getCoupledMatt(), SimConfig.JIM_CHARGE_MATT_SCALAR));
+          getVectorToAgent(sim, casey.getCoupledAgent(), SimConfig.JIM_CHARGE_MATT_SCALAR));
       /*Perform walk to Matt using aggressive vector*/
       walkTowards(sim, new Double2D(aggressiveVector));
     }

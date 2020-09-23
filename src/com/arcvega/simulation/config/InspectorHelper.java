@@ -1,8 +1,6 @@
 package com.arcvega.simulation.config;
 
 import com.arcvega.simulation.agents.Agent;
-import com.arcvega.simulation.agents.Casey;
-import com.arcvega.simulation.agents.Matt;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import sim.util.Bag;

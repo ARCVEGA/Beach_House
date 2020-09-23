@@ -3,7 +3,10 @@ package com.arcvega.simulation.agents;
 import com.arcvega.simulation.config.SimConfig;
 import com.arcvega.simulation.config.Simulation;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import sim.engine.Steppable;
+import sim.util.Bag;
 import sim.util.Double2D;
 import sim.util.MutableDouble2D;
 
@@ -160,14 +163,6 @@ public abstract class Agent implements Steppable {
     }
   }
 
-  public void setCoupledAgent(Agent agent) {
-    this.coupledAgent = agent;
-  }
-
-  public boolean isCoupled() {
-    return coupledAgent != null;
-  }
-
 
   /**
    * Standard behaviour if agent is playing catch is that it does nothing
@@ -179,6 +174,77 @@ public abstract class Agent implements Steppable {
     if (agent.isPlayingCatch() && isPlayingCatch()) {
       return;
     }
+  }
+
+
+  /**
+   * Standard implementation of how an agent evaluates if pairing is favorable
+   *
+   * @param desiredAgent The agent which is seen as a superior partner over the agent which is
+   *                     currently coupled to this instance
+   */
+  void competeForAgent(Agent desiredAgent) {
+    if (desiredAgent == null) {
+      return;
+    }
+
+    if(isCoupled() && desiredAgent.isCoupled())
+    {
+      if (desiredAgent.getAffinity() > this.coupledAgent.getAffinity()
+          && this.affinity > desiredAgent.getCoupledAgent().getAffinity()) {
+        this.coupledAgent.setCoupledAgent(null); // Break up with my partner
+        desiredAgent.getCoupledAgent()
+            .setCoupledAgent(null); // Desired agent breaks up with its partner
+
+        setCoupledAgent(desiredAgent);
+        desiredAgent.setCoupledAgent(this);
+      }
+    }
+    else if(!isCoupled() && desiredAgent.isCoupled())
+    {
+      if(this.affinity > desiredAgent.getCoupledAgent().getAffinity())
+      {
+        desiredAgent.getCoupledAgent().setCoupledAgent(null);
+        desiredAgent.setCoupledAgent(this);
+        setCoupledAgent(desiredAgent);
+      }
+    }
+  }
+
+
+  /**
+   * Standard method to get agents nearby despite being. Agents are allowed to be coupled, but can
+   * not be on the blacklist
+   *
+   * @param sim             Simulation containing all agents
+   * @param cls             Type of agents which aught to be found
+   * @param minDistToAgents Minimum distance potential agents can be from current instance
+   * @return All agents which pass the filtering constrains
+   */
+  Bag getAgentsNearby(Simulation sim, Class<? extends Agent> cls, double minDistToAgents) {
+    Bag agentsNearby = new Bag();
+    Bag neighbours = sim.space.getAllObjects();
+
+    Stream<Object> stream = neighbours.stream();
+    agentsNearby.addAll(stream.filter(cls::isInstance).filter(
+        obj -> sim.space.getObjectLocation(this)
+            .distance(sim.space.getObjectLocation(obj)) < minDistToAgents)
+        .filter(obj -> !getAgentBlacklist().contains(obj)).collect(
+            Collectors.toList()));
+
+    return agentsNearby;
+  }
+
+  public void setCoupledAgent(Agent agent) {
+    this.coupledAgent = agent;
+  }
+
+  public Agent getCoupledAgent() {
+    return this.coupledAgent;
+  }
+
+  public boolean isCoupled() {
+    return coupledAgent != null;
   }
 
   public double getAffinity() {
