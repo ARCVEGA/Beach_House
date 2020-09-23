@@ -29,8 +29,9 @@ public class Casey extends Agent {
 
 
   /**
-   * Defines behaviour of how Casey walks if she is not currently coupled with a Matt but is
-   * actively looking for a potential partner
+   * // TODO: This method should either be refactored into something useful or deleted Defines
+   * behaviour of how Casey walks if she is not currently coupled with a Matt but is actively
+   * looking for a potential partner
    *
    * @param sim Simulation containing agents
    * @apiNote This method is currently not used, since {@link Matt} does the coupling
@@ -61,6 +62,13 @@ public class Casey extends Agent {
   private void coupledWalk(Simulation sim) {
     if (!this.coupledAgent.isPlayingCatch()) {
       randomWalk(sim, SimConfig.FLIGHT_RESPONSE);
+
+      if (sim.random.nextInt(100) > 10) {
+        Bag potentialMatts = getAgentsNearby(sim, Matt.class,
+            SimConfig.CASEY_MINIMUM_COUPLING_DISTANCE);
+
+        competeForAgent(getMostAttractiveMatt(potentialMatts));
+      }
     }
   }
 
@@ -95,6 +103,8 @@ public class Casey extends Agent {
    *
    * @param sim Simulation where entities exist
    * @return Bag of filtered Matt agens
+   * @deprecated Method has been replaced by {@link Agent#getAgentsNearby(Simulation, Class,
+   * double)}
    */
   @Deprecated
   private Bag getMattsNearby(Simulation sim) {
@@ -122,6 +132,8 @@ public class Casey extends Agent {
    * @param potentialPartner {@link Matt} which has potential to be partnered
    * @param vectorToMatt     Vector which moves Casey towards Matt
    * @apiNote This method is currently not used, since {@link Matt} does the coupling
+   * @deprecated It is up to the Matt agent to search for a potential mate not Casey. Casey only
+   * competes for superior agents using {@link Agent#competeForAgent(Agent)}
    */
   @Deprecated
   private void evalAndCouple(Simulation sim, Matt potentialPartner, Double2D vectorToMatt) {
@@ -149,10 +161,6 @@ public class Casey extends Agent {
 
     setOnBlacklist(potentialPartner);
     return false;
-  }
-
-  public Matt getCoupledMatt() {
-    return (Matt) this.coupledAgent;
   }
 
 }
