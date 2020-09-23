@@ -103,6 +103,8 @@ public class Casey extends Agent {
    *
    * @param sim Simulation where entities exist
    * @return Bag of filtered Matt agens
+   * @deprecated Method has been replaced by {@link Agent#getAgentsNearby(Simulation, Class,
+   * double)}
    */
   @Deprecated
   private Bag getMattsNearby(Simulation sim) {
@@ -130,6 +132,8 @@ public class Casey extends Agent {
    * @param potentialPartner {@link Matt} which has potential to be partnered
    * @param vectorToMatt     Vector which moves Casey towards Matt
    * @apiNote This method is currently not used, since {@link Matt} does the coupling
+   * @deprecated It is up to the Matt agent to search for a potential mate not Casey. Casey only
+   * competes for superior agents using {@link Agent#competeForAgent(Agent)}
    */
   @Deprecated
   private void evalAndCouple(Simulation sim, Matt potentialPartner, Double2D vectorToMatt) {
