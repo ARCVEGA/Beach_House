@@ -10,7 +10,7 @@ import sim.util.MutableDouble2D;
 public class Jim extends Agent {
 
   private final Casey casey;
-  private boolean hasAcceptedMatt = false;
+  private Matt caseysPairedMatt = null;
 
   public Jim(Simulation sim, Casey casey) {
     super(sim);
@@ -21,7 +21,7 @@ public class Jim extends Agent {
   public void step(SimState simState) {
     Simulation sim = (Simulation) simState;
 
-    if (!this.casey.isCoupled() || this.hasAcceptedMatt) {
+    if (!this.casey.isCoupled() || hasAcceptedMatt((Matt) this.casey.getCoupledAgent())) {
       keepNearCasey(sim);
     } else {
       chargeAtMatt(sim);
@@ -55,7 +55,7 @@ public class Jim extends Agent {
     if (sim.space.getObjectLocation(this)
         .distance(sim.space.getObjectLocation(this.casey.getCoupledAgent()))
         < SimConfig.JIM_MAX_DISTANCE_FROM_MATT) {
-      if (!hasAcceptedMatt && this.casey.isCoupled()) {
+      if (!hasAcceptedMatt((Matt) this.casey.getCoupledAgent()) && this.casey.isCoupled()) {
         playCatch(sim, this.casey.getCoupledAgent());
       }
     } else {
@@ -95,8 +95,7 @@ public class Jim extends Agent {
       matt.setPlayingCatch(false);
       this.setPlayingCatch(false);
     } else {
-      this.hasAcceptedMatt = true;
-
+      this.caseysPairedMatt = matt;
       matt.setPlayingCatch(false);
       this.setPlayingCatch(false);
     }
@@ -112,7 +111,11 @@ public class Jim extends Agent {
    */
   private boolean isAcceptablePartner(Matt matt) {
     // TODO: This method is simple for now, but will grow in complexity once genetics are added
-    return matt.getAffinity() >= this.standard;
+    return (matt.getAffinity() >= this.standard);
+  }
+
+  private boolean hasAcceptedMatt(Matt caseyPartner) {
+    return (caseyPartner == this.caseysPairedMatt);
   }
 
 }

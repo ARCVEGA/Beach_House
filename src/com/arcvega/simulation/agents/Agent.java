@@ -188,8 +188,7 @@ public abstract class Agent implements Steppable {
       return;
     }
 
-    if(isCoupled() && desiredAgent.isCoupled())
-    {
+    if (isCoupled() && desiredAgent.isCoupled()) {
       if (desiredAgent.getAffinity() > this.coupledAgent.getAffinity()
           && this.affinity > desiredAgent.getCoupledAgent().getAffinity()) {
         this.coupledAgent.setCoupledAgent(null); // Break up with my partner
@@ -199,11 +198,8 @@ public abstract class Agent implements Steppable {
         setCoupledAgent(desiredAgent);
         desiredAgent.setCoupledAgent(this);
       }
-    }
-    else if(!isCoupled() && desiredAgent.isCoupled())
-    {
-      if(this.affinity > desiredAgent.getCoupledAgent().getAffinity())
-      {
+    } else if (!isCoupled() && desiredAgent.isCoupled()) {
+      if (this.affinity > desiredAgent.getCoupledAgent().getAffinity()) {
         desiredAgent.getCoupledAgent().setCoupledAgent(null);
         desiredAgent.setCoupledAgent(this);
         setCoupledAgent(desiredAgent);
