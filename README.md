@@ -22,3 +22,5 @@ or `com.arcvega.simulation.config.SimulationWithUI`.
 ## Contributing
 
 Thank you for your interest in this project! Please reference the [Contributing](https://github.com/ARCVEGA/Beach_House/blob/master/CONTRIBUTING.md) manual for more information on how you can contribute to this project.
+
+If you have found a bug or just want to propose ideas that you feel would improve this project, please visit the [issues](https://github.com/ARCVEGA/Beach_House/issues) section 
