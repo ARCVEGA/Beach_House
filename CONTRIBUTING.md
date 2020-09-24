@@ -1,4 +1,4 @@
-### First of all, thank you for contributing to this project!
+## First of all, thank you for contributing to this project!
 
 There are a few rules that we would like you to follow if you are planning on contributing to this project. We ask this to ensure that this project can grow over time with productivity and openness as foundational concepts.
 
@@ -19,10 +19,24 @@ There are a few rules that we would like you to follow if you are planning on co
 
 ## How do I contribute to the code?
 
-In order to contribute, its best if you find an issue which is open and try to resolve it. You should **fork** the project to work on your implementation, and request to merge with the original branch once you have completed said changes. 
+In order to contribute to this project, **fork** the repo and work on your implementation on the newly forked version. Once you have completed the bugfix or feature and are happy with it, you can request to merge with the original branch. We will be monitoring the repo and address pull requests. 
 
 
-## How do I know what to do?
+### My PR was rejected, what do I do?
+
+You may not get your changes accepted the first time arround, but dont let that discourage you. This will usually happend under a variety of circumstances:
+
+- Your code is messy and proned to bugs 
+- Your code does not provide appropriate functionality to the project
+- The code you submitted crashes or doesn't work
+- You are missing a requriement listed in the PR template 
+- The feature you added either exists already or is nor elevant at the current stage of the project
+- et.
+
+If you have questions about why your changes weren't accepted and what you can just ask one of the maintainers. We will usually leave comments and mention anything that we feel should be changed in the PR review, but if its still unclear just ask. 
+
+
+## How do I know what to contribute?
  
 You have two options here:
 1. You can look at existing issues or bugs and try to resolve them
