@@ -21,4 +21,4 @@ or `com.arcvega.simulation.config.SimulationWithUI`.
 
 ## Contributing
 
-If you want to contribute to this project, fork the project and request to merge once you have completed the feature you inted to add. 
+Thank you for your interest in this project! Please reference the [Contributing](https://github.com/ARCVEGA/Beach_House/blob/master/CONTRIBUTING.md) manual for more information on how you can contribute to this project.
