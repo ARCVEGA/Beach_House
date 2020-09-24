@@ -19,6 +19,17 @@ straight from an IDE. These are located at  `com.arcvega.simulation.config.Simul
 or `com.arcvega.simulation.config.SimulationWithUI`.
 
 
+## Helpful Resources
+
+We used [IntelliJ](https://www.jetbrains.com/idea/) in conjunction with `gradel` to build this project. You should be able to import this project into your `IntelliJ` IDE and just run it as specified in the section above
+
+# Resources to use `MASON`
+- [Mason Project Page](https://cs.gmu.edu/~eclab/projects/mason/)
+- [Mason Manual PDF](https://cs.gmu.edu/~eclab/projects/mason/manual.pdf)
+- [Mason Docmentation](https://cs.gmu.edu/~eclab/projects/mason/classdocs/)
+- [Official Mason Repo](https://github.com/eclab/mason)
+
+
 ## Contributing
 
 Thank you for your interest in this project! Please reference the [Contributing](https://github.com/ARCVEGA/Beach_House/blob/master/CONTRIBUTING.md) manual for more information on how you can contribute to this project.
