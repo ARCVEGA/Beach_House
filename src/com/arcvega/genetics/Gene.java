@@ -32,16 +32,7 @@ public class Gene {
     this.mutationProbability = prob;
   }
 
-
-  /**
-   * Defines how a gene will be mutated if it is deemed necessary
-   */
-  public void mutateGene() {
-  }
-
-  private void computeGeneFitness() {
-    this.geneFitness = 0;
-  }
+  
 
   public String getGeneLabel() {
     return this.geneLabel;
