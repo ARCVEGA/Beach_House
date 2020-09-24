@@ -5,7 +5,7 @@ package com.arcvega.genetics;
 /**
  * A generic class which represents a single gene as part of a Chromosome
  */
-public abstract class Gene {
+public class Gene {
 
   /**The label is used so that we can cross the correct genes during genetic exchange*/
   private final double mutationProbability;
