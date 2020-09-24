@@ -6,8 +6,8 @@ There are a few rules that we would like you to follow if you are planning on co
 ### Basic Rules
 
 1. Keep your code as modulare as possible to avoid any unnecesary dependencies that may casue issues in the future.
-     * You should be enforcing encapsulation in your classes and managing access to member variables appropriatly
-     
+   - You should be enforcing encapsulation in your classes and managing access to member variables appropriatly
+    
 2. Clearly explain what your code does and why it should be included in the project in your pull request. This makes it a lot easier for us to decide if the feature can be integrated, or if it needs to be refined.
 
 3. Document your code using JavaDocs. Doing this helps others who might end up using your code, and it makes it easier for us to figure out what your code does when you make a pull request.
