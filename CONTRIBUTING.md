@@ -1,4 +1,7 @@
-First of all, thank you for contributing to this project. There are a few rules that we would like you to follow if you are planning on contributing to this project.
+### First of all, thank you for contributing to this project!
+
+There are a few rules that we would like you to follow if you are planning on contributing to this project. We ask this to ensure that this project can grow over time with productivity and openness as foundational concepts.
+
 
 ### Basic Rules
 
