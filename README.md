@@ -17,3 +17,8 @@ run `gradle build`. This will generate a jar which can easily be run using `grad
 An alternative way would be to run the project using one of the main entry points
 straight from an IDE. These are located at  `com.arcvega.simulation.config.Simulation` 
 or `com.arcvega.simulation.config.SimulationWithUI`.
+
+
+## Contributing
+
+If you want to contribute to this project, fork the project and request to merge once you have completed the feature you inted to add. 
