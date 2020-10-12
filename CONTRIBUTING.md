@@ -31,7 +31,7 @@ You may not get your changes accepted the first time arround, but dont let that 
 - The code you submitted crashes or doesn't work
 - You are missing a requriement listed in the PR template 
 - The feature you added either exists already or is nor elevant at the current stage of the project
-- et.
+- etc.
 
 If you have questions about why your changes weren't accepted and what you can just ask one of the maintainers. We will usually leave comments and mention anything that we feel should be changed in the PR review, but if its still unclear just ask. 
 
